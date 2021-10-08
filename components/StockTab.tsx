@@ -4,6 +4,7 @@ import { useStockData } from '../hooks/useStockData';
 
 export type StockTabProps = {
     title: string,
+    stocks: string[] // array of stock symbols
 }
 
 export type StockTabItemProps = {
@@ -58,12 +59,11 @@ const StockTabItem = ({symbol}: StockTabItemProps) => {
     
 }
 
-const StockTab = ({title}: StockTabProps) => {
+const StockTab = ({title, stocks}: StockTabProps) => {
   return (
       <View style={styles.wrapper}>
           <Text style={styles.title}>{title}</Text>
-          <StockTabItem
-            symbol="IDEA.LON"/>
+          {stocks.map((stock) => <StockTabItem symbol={stock}/>)}
       </View>
   )
 }
