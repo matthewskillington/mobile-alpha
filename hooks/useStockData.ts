@@ -12,13 +12,17 @@ const SYMBOL = "01. symbol";
 const HIGH = "03. high";
 const LOW = "04. low";
 
-const useStockData = (symbol: string) => {
-    const [data, setData] = useState<StockData | undefined>();
+const useStockData = (symbols: string[]) => {
+    const [data, setData] = useState<StockData[] | undefined>();
+    let stockData: StockData[] = [];
 
     const fetchData = async () => {
-        const result = await getQuotePrice(symbol);
-        const globalQuote = result[GLOBAL_QUOTE];
-        setData({name: globalQuote[SYMBOL], high: globalQuote[HIGH], low: globalQuote[LOW]});
+        await Promise.all(symbols.map(async (symbol: string) => {
+            const result = await getQuotePrice(symbol);
+            const globalQuote = result[GLOBAL_QUOTE];
+            stockData.push({name: globalQuote[SYMBOL], high: globalQuote[HIGH], low: globalQuote[LOW]});
+        }))
+        setData(stockData);
     }
 
     useEffect(() => {

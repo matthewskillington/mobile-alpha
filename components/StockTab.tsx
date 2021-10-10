@@ -8,7 +8,9 @@ export type StockTabProps = {
 }
 
 export type StockTabItemProps = {
-    symbol: string,
+    name: string,
+    low: number,
+    high: number,
 }
 
 const styles = StyleSheet.create({
@@ -36,36 +38,40 @@ const styles = StyleSheet.create({
     }
 })
 
-const StockTabItem = ({symbol}: StockTabItemProps) => {
+const StockTabItem = ({name, low, high}: StockTabItemProps) => {
+    return (
+        <View style={styles.item}>
+            <Text style={styles.itemText}>{name}</Text>
+            <View style={styles.itemWrapper}>
+                <Text style={styles.itemText}>{low}</Text>
+                <Text style={[styles.itemText, {marginLeft: 'auto'}]}>{high}</Text>
+            </View>
+        </View>   
+        );
+}
 
-    const data = useStockData(symbol);
-
-    if(data) {
+const StockTab = ({title, stocks}: StockTabProps) => {
+    const data = useStockData(stocks);
+    
+    if(data){
         return (
-            <View style={styles.item}>
-                <Text style={styles.itemText}>{data.name}</Text>
-                <View style={styles.itemWrapper}>
-                   <Text style={styles.itemText}>{data.low}</Text>
-                   <Text style={[styles.itemText, {marginLeft: 'auto'}]}>{data.high}</Text>
-                </View>
-            </View>   
-           )
+            <View style={styles.wrapper}>
+                <Text style={styles.title}>{title}</Text>
+                {data.map((stock) => 
+                    <StockTabItem 
+                        name={stock.name} 
+                        low={stock.low} 
+                        high={stock.high} 
+                        key={stock.name}/>)
+                        }
+            </View>
+        )
     } else {
         return (
             <Text>Loading...</Text>
         )
     }
-
     
-}
-
-const StockTab = ({title, stocks}: StockTabProps) => {
-  return (
-      <View style={styles.wrapper}>
-          <Text style={styles.title}>{title}</Text>
-          {stocks.map((stock) => <StockTabItem symbol={stock}/>)}
-      </View>
-  )
 }
 
 export { StockTab }
