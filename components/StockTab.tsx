@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useStockData } from '../hooks/useStockData';
+import { Feather } from '@expo/vector-icons';
 
 export type StockTabProps = {
     title: string,
@@ -35,6 +36,13 @@ const styles = StyleSheet.create({
     },
     itemText: {
         color: '#fff',
+    },
+    topWrapper: {
+        flexDirection: 'row',
+        marginBottom: 10,
+    },
+    refreshIcon: {
+        marginLeft: 'auto',
     }
 })
 
@@ -51,12 +59,19 @@ const StockTabItem = ({name, low, high}: StockTabItemProps) => {
 }
 
 const StockTab = ({title, stocks}: StockTabProps) => {
-    const data = useStockData(stocks);
+    const { data, fetchData: refetchData } = useStockData(stocks);
     
     if(data){
         return (
             <View style={styles.wrapper}>
-                <Text style={styles.title}>{title}</Text>
+                <View style={styles.topWrapper}>
+                    <Text style={styles.title}>{title}</Text>
+                    <TouchableOpacity
+                        style={styles.refreshIcon}
+                        onPress={() => refetchData()}>
+                        <Feather name="refresh-ccw" size={24} color="white" />
+                    </TouchableOpacity>
+                </View>
                 {data.map((stock) => 
                     <StockTabItem 
                         name={stock.name} 

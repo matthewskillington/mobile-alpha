@@ -71,9 +71,9 @@ const useStockData = (symbols: string[]) => {
 
     useEffect(() => {
         fetchData();
-    },[])
+    }, [])
 
-    return data;
+    return { data, fetchData };
 }
 
 export { useStockData }
