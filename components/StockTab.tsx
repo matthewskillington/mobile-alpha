@@ -13,7 +13,7 @@ export type StockTabItemProps = {
     name: string,
     low: number,
     high: number,
-    isEditing: boolean,
+    isEditing: boolean
 }
 
 const styles = StyleSheet.create({
@@ -30,10 +30,10 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     item: {
-        paddingVertical: 5,
+        paddingVertical: 10,
         flexDirection: 'row',
         flex: 1,
-        alignItems: 'center',
+        maxHeight: 50,
     },
     itemPriceWrapper: {
         flexDirection: 'row',
@@ -59,8 +59,13 @@ const styles = StyleSheet.create({
     },
     deleteIcon: {
         marginLeft: 10,
+        alignSelf: 'center',
     }
 })
+
+const deleteItem = (symbol: string) => {
+    console.log(`deleting item ${symbol}`);
+}
 
 const StockTabItem = ({name, low, high, isEditing}: StockTabItemProps) => {
     return (
@@ -74,7 +79,11 @@ const StockTabItem = ({name, low, high, isEditing}: StockTabItemProps) => {
             </View>
             {
             isEditing ? 
-            <Ionicons style={styles.deleteIcon} name="close-circle" size={24} color="white"/> 
+            <TouchableOpacity
+                onPress={() => deleteItem(name)}
+                style={styles.deleteIcon}>
+                <Ionicons name="close-circle" size={24} color="white"/> 
+            </TouchableOpacity>
             : null
             }
     
@@ -104,6 +113,7 @@ const StockTab = ({title, stocks}: StockTabProps) => {
                         </TouchableOpacity>
                     </View>
                 </View>
+
                 {data.map((stock) => 
                     <StockTabItem 
                         name={stock.name} 

@@ -1,18 +1,42 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StockTab } from '../components/StockTab';
 
 import { View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
+const FAV_STOCKS = 'favStocks';
+
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+  const [stocks, setStocks] = useState([]);
+
+  useEffect(() => {
+    const getStocks = async () => {
+
+      //* TODO: Remove, temporarily add some data until feature fully implemented */
+      const jsonValue = JSON.stringify(["AAPL", "IDEA.LON", "F.NYSE"])
+      await AsyncStorage.setItem(FAV_STOCKS, jsonValue);
+    
+      const result = await AsyncStorage.getItem(FAV_STOCKS);
+      const jsonResult = result ? JSON.parse(result) : [];
+      setStocks(jsonResult);
+    }
+
+    getStocks();
+  }, [])  
+
   return (
     <ScrollView>
       <View style={styles.container}>
+        {stocks.length >= 1 ? 
         <StockTab 
           title="Market data"
-          stocks={["IDEA.LON", "TSLA", "IBM", "AAPL"]}/>
+          stocks={stocks}/> :
+        <Text>Loading...</Text>
+        }
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       </View>
     </ScrollView>

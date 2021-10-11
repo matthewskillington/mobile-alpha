@@ -60,10 +60,20 @@ const useStockData = (symbols: string[]) => {
         }));
         
         await Promise.all(stocksToFetchFromAV.map(async (symbol: string) => {
-            const result = await getQuotePrice(symbol);
-            const globalQuote = result[GLOBAL_QUOTE];
-            stockData.push({name: globalQuote[SYMBOL], high: globalQuote[HIGH], low: globalQuote[LOW]});
-            console.log(`📲 Fetched stock on api ${symbol}`);
+            try {
+                const result = await getQuotePrice(symbol);
+                const globalQuote = result[GLOBAL_QUOTE];
+                // Check there was a symbol returned from the api, if not its likely the response was malformed
+                if(globalQuote[SYMBOL]){
+                    stockData.push({name: globalQuote[SYMBOL], high: globalQuote[HIGH], low: globalQuote[LOW]});
+                } else {
+                    throw new Error(`API response was malformed for ${symbol}`)
+                }
+                console.log(`📲 Fetched stock on api ${symbol}`);
+            }
+            catch (e){
+                console.log("Error reading stock value from AlphaVantage:", e);
+            }
         }));
         setData(stockData);
         saveData(stockData);
