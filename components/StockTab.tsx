@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useStockData } from '../hooks/useStockData';
-import { Feather } from '@expo/vector-icons';
+import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
 
 export type StockTabProps = {
     title: string,
@@ -12,6 +13,7 @@ export type StockTabItemProps = {
     name: string,
     low: number,
     high: number,
+    isEditing: boolean,
 }
 
 const styles = StyleSheet.create({
@@ -29,10 +31,17 @@ const styles = StyleSheet.create({
     },
     item: {
         paddingVertical: 5,
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
     },
-    itemWrapper: {
+    itemPriceWrapper: {
         flexDirection: 'row',
         paddingVertical: 5,
+        width: '100%',
+    },
+    itemContent: {
+        flex: 1,
     },
     itemText: {
         color: '#fff',
@@ -41,24 +50,40 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom: 10,
     },
-    refreshIcon: {
+    tabIcon: {
+        marginLeft: 20,
+    },
+    rightIcons: {
         marginLeft: 'auto',
+        flexDirection: 'row',
+    },
+    deleteIcon: {
+        marginLeft: 10,
     }
 })
 
-const StockTabItem = ({name, low, high}: StockTabItemProps) => {
+const StockTabItem = ({name, low, high, isEditing}: StockTabItemProps) => {
     return (
         <View style={styles.item}>
-            <Text style={styles.itemText}>{name}</Text>
-            <View style={styles.itemWrapper}>
-                <Text style={styles.itemText}>{low}</Text>
-                <Text style={[styles.itemText, {marginLeft: 'auto'}]}>{high}</Text>
+            <View style={styles.itemContent}>
+                <Text style={styles.itemText}>{name}</Text>
+                <View style={styles.itemPriceWrapper}>
+                    <Text style={styles.itemText}>{low}</Text>
+                    <Text style={[styles.itemText, {marginLeft: 'auto'}]}>{high}</Text>
+                </View>
             </View>
+            {
+            isEditing ? 
+            <Ionicons style={styles.deleteIcon} name="close-circle" size={24} color="white"/> 
+            : null
+            }
+    
         </View>   
         );
 }
 
 const StockTab = ({title, stocks}: StockTabProps) => {
+    const [ isEditing, setIsEditing ] = useState(false);
     const { data, fetchData: refetchData } = useStockData(stocks);
     
     if(data){
@@ -66,18 +91,26 @@ const StockTab = ({title, stocks}: StockTabProps) => {
             <View style={styles.wrapper}>
                 <View style={styles.topWrapper}>
                     <Text style={styles.title}>{title}</Text>
-                    <TouchableOpacity
-                        style={styles.refreshIcon}
-                        onPress={() => refetchData()}>
-                        <Feather name="refresh-ccw" size={24} color="white" />
-                    </TouchableOpacity>
+                    <View style={styles.rightIcons}>
+                        <TouchableOpacity
+                            style={styles.tabIcon}
+                            onPress={() => setIsEditing(!isEditing)}>
+                            <AntDesign name="edit" size={24} color="white" />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.tabIcon}
+                            onPress={() => refetchData()}>
+                            <Feather name="refresh-ccw" size={24} color="white" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 {data.map((stock) => 
                     <StockTabItem 
                         name={stock.name} 
                         low={stock.low} 
                         high={stock.high} 
-                        key={stock.name}/>)
+                        key={stock.name}
+                        isEditing={isEditing}/>)
                         }
             </View>
         )
