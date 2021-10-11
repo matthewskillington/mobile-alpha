@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useStockData } from '../hooks/useStockData';
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FAV_STOCKS } from '../constants/Values';
+import { arrayRemove } from '../helpers/helper';
 
 export type StockTabProps = {
     title: string,
@@ -13,7 +16,8 @@ export type StockTabItemProps = {
     name: string,
     low: number,
     high: number,
-    isEditing: boolean
+    isEditing: boolean,
+    deleteItem: (symbol: string) => void;
 }
 
 const styles = StyleSheet.create({
@@ -63,11 +67,15 @@ const styles = StyleSheet.create({
     }
 })
 
-const deleteItem = (symbol: string) => {
-    console.log(`deleting item ${symbol}`);
+const deleteItemFromStorage = async (symbol: string): Promise<string[]> => {
+    let stocks = await AsyncStorage.getItem(FAV_STOCKS);
+    stocks = stocks ? JSON.parse(stocks) : [] as string[];
+    const newStocks = arrayRemove(stocks, symbol);
+    await AsyncStorage.setItem(FAV_STOCKS, JSON.stringify(newStocks));
+    return newStocks || [];
 }
 
-const StockTabItem = ({name, low, high, isEditing}: StockTabItemProps) => {
+const StockTabItem = ({name, low, high, isEditing, deleteItem}: StockTabItemProps) => {
     return (
         <View style={styles.item}>
             <View style={styles.itemContent}>
@@ -91,9 +99,15 @@ const StockTabItem = ({name, low, high, isEditing}: StockTabItemProps) => {
         );
 }
 
-const StockTab = ({title, stocks}: StockTabProps) => {
+const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
     const [ isEditing, setIsEditing ] = useState(false);
+    const [ stocks, setStocks] = useState(initialStocks);
     const { data, fetchData: refetchData } = useStockData(stocks);
+
+    const deleteItem = async (symbol: string) => {
+        const newStocks = await deleteItemFromStorage(symbol);
+        setStocks(newStocks);
+    }
     
     if(data){
         return (
@@ -120,7 +134,8 @@ const StockTab = ({title, stocks}: StockTabProps) => {
                         low={stock.low} 
                         high={stock.high} 
                         key={stock.name}
-                        isEditing={isEditing}/>)
+                        isEditing={isEditing}
+                        deleteItem={deleteItem}/>)
                         }
             </View>
         )

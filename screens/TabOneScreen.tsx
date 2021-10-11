@@ -6,9 +6,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { StockTab } from '../components/StockTab';
 
 import { View } from '../components/Themed';
+import { FAV_STOCKS } from '../constants/Values';
 import { RootTabScreenProps } from '../types';
-
-const FAV_STOCKS = 'favStocks';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [stocks, setStocks] = useState([]);
@@ -17,7 +16,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     const getStocks = async () => {
 
       //* TODO: Remove, temporarily add some data until feature fully implemented */
-      const jsonValue = JSON.stringify(["AAPL", "IDEA.LON", "F.NYSE"])
+      const jsonValue = JSON.stringify(["AAPL", "IDEA.LON"])
       await AsyncStorage.setItem(FAV_STOCKS, jsonValue);
     
       const result = await AsyncStorage.getItem(FAV_STOCKS);
