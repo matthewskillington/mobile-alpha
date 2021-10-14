@@ -14,7 +14,14 @@ const getQuotePrice = async(symbol: string): Promise<any> => {
     return data;
 }
 
+const searchStocks = async(searchTerm: string): Promise<any> => {
+    const response = await fetch(`${BASE_URL}/query?function=SYMBOL_SEARCH&keywords=${searchTerm}&apikey=${ALPHA_VANTAGE_API_KEY}`);
+    const data = await response.json();
+    return data;
+}
+
 export {
     getDailyPrice,
-    getQuotePrice
+    getQuotePrice,
+    searchStocks
 }
