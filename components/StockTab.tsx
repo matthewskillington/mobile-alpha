@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { useStockData } from '../hooks/useStockData';
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FAV_STOCKS } from '../constants/Values';
 import { arrayRemove } from '../helpers/helper';
+import { searchStocks } from '../api/alphaVantage';
+import debounce from 'lodash.debounce';
 
 export type StockTabProps = {
     title: string,
@@ -20,10 +22,14 @@ export type StockTabItemProps = {
     deleteItem: (symbol: string) => void;
 }
 
+export type SearchSuggestion = {
+    name: string,
+    symbol: string,
+}
+
 const styles = StyleSheet.create({
     wrapper: {
         backgroundColor: '#666',
-        height: 300,
         width: '100%',
         borderRadius: 5,
         padding: 20
@@ -38,6 +44,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flex: 1,
         maxHeight: 50,
+        zIndex: -1
     },
     itemPriceWrapper: {
         flexDirection: 'row',
@@ -64,6 +71,30 @@ const styles = StyleSheet.create({
     deleteIcon: {
         marginLeft: 10,
         alignSelf: 'center',
+    },
+    searchWrapper: {
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        marginTop: 10,
+        
+    },
+    searchAndSuggestionWrapper: {
+        position: 'relative',
+    },
+    searchBar: {
+        padding: 5,
+        height: 45,
+        flex: 1,
+        fontSize: 18,
+    },
+    searchIcon: {
+        padding: 10,
+    },
+    suggestionBox: {
+        width: '100%',
+        position: 'absolute',
+        top: 55,
+        backgroundColor: '#FFF',
     }
 })
 
@@ -102,11 +133,33 @@ const StockTabItem = ({name, low, high, isEditing, deleteItem}: StockTabItemProp
 const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
     const [ isEditing, setIsEditing ] = useState(false);
     const [ stocks, setStocks] = useState(initialStocks);
+    const [ searchValue, setSearchValue ] = useState("");
+    const [ searchSuggestions, setSearchSuggestions ] = useState<SearchSuggestion[]>([]);
     const { data, fetchData: refetchData } = useStockData(stocks);
 
     const deleteItem = async (symbol: string) => {
         const newStocks = await deleteItemFromStorage(symbol);
         setStocks(newStocks);
+    }
+
+    const getSuggestions = useCallback(debounce(async text => {
+        if (!text){
+            setSearchSuggestions([]);
+            return;
+        }
+        const bestMatches = await searchStocks(text)
+        const suggestions: SearchSuggestion[] = [];
+        bestMatches['bestMatches'].forEach((suggestion: any) => {
+            suggestions.push(
+                {name: suggestion['2. name'], symbol: suggestion['1. symbol']} 
+            );
+        });
+        setSearchSuggestions(suggestions);
+    }, 2000), []);
+
+    const handleSearchChange = (text: string) => {
+        setSearchValue(text);
+        getSuggestions(text);
     }
     
     if(data){
@@ -118,15 +171,35 @@ const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
                         <TouchableOpacity
                             style={styles.tabIcon}
                             onPress={() => setIsEditing(!isEditing)}>
-                            <AntDesign name="edit" size={24} color="white" />
+                            <AntDesign name="edit" size={32} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.tabIcon}
                             onPress={() => refetchData()}>
-                            <Feather name="refresh-ccw" size={24} color="white" />
+                            <Feather name="refresh-ccw" size={32} color="white" />
                         </TouchableOpacity>
                     </View>
                 </View>
+                {isEditing ? 
+                <View style={styles.searchAndSuggestionWrapper}>
+                    <View style={styles.searchWrapper}>
+                        <AntDesign style={styles.searchIcon}name="search1" size={24} color="black" />
+                        <TextInput
+                            style={styles.searchBar}
+                            value={searchValue}
+                            onChangeText={handleSearchChange}/>
+                    </View> 
+                    <View style={styles.suggestionBox}>
+                        {searchSuggestions.map((suggestion: SearchSuggestion) => 
+                            <>
+                                <Text>{suggestion.symbol}</Text>
+                                <Text>{suggestion.name}</Text>
+                            </>
+                        )}
+                    </View>
+                </View> 
+                : null
+                }
 
                 {data.map((stock) => 
                     <StockTabItem 
