@@ -1,25 +1,18 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { useStockData } from '../hooks/useStockData';
-import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons';
 import { useCallback, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FAV_STOCKS } from '../constants/Values';
 import { arrayRemove } from '../helpers/helper';
 import { searchStocks } from '../api/alphaVantage';
 import debounce from 'lodash.debounce';
+import { StockTabItem } from './StockItem';
 
 export type StockTabProps = {
     title: string,
     stocks: string[] // array of stock symbols
-}
-
-export type StockTabItemProps = {
-    name: string,
-    low: number,
-    high: number,
-    isEditing: boolean,
-    deleteItem: (symbol: string) => void;
 }
 
 export type SearchSuggestion = {
@@ -39,24 +32,6 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 20
     },
-    item: {
-        paddingVertical: 10,
-        flexDirection: 'row',
-        flex: 1,
-        maxHeight: 50,
-        zIndex: -1
-    },
-    itemPriceWrapper: {
-        flexDirection: 'row',
-        paddingVertical: 5,
-        width: '100%',
-    },
-    itemContent: {
-        flex: 1,
-    },
-    itemText: {
-        color: '#fff',
-    },
     topWrapper: {
         flexDirection: 'row',
         marginBottom: 10,
@@ -67,10 +42,6 @@ const styles = StyleSheet.create({
     rightIcons: {
         marginLeft: 'auto',
         flexDirection: 'row',
-    },
-    deleteIcon: {
-        marginLeft: 10,
-        alignSelf: 'center',
     },
     searchWrapper: {
         backgroundColor: '#fff',
@@ -106,29 +77,6 @@ const deleteItemFromStorage = async (symbol: string): Promise<string[]> => {
     return newStocks || [];
 }
 
-const StockTabItem = ({name, low, high, isEditing, deleteItem}: StockTabItemProps) => {
-    return (
-        <View style={styles.item}>
-            <View style={styles.itemContent}>
-                <Text style={styles.itemText}>{name}</Text>
-                <View style={styles.itemPriceWrapper}>
-                    <Text style={styles.itemText}>{low}</Text>
-                    <Text style={[styles.itemText, {marginLeft: 'auto'}]}>{high}</Text>
-                </View>
-            </View>
-            {
-            isEditing ? 
-            <TouchableOpacity
-                onPress={() => deleteItem(name)}
-                style={styles.deleteIcon}>
-                <Ionicons name="close-circle" size={24} color="white"/> 
-            </TouchableOpacity>
-            : null
-            }
-    
-        </View>   
-        );
-}
 
 const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
     const [ isEditing, setIsEditing ] = useState(false);
