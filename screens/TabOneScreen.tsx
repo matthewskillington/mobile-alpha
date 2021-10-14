@@ -36,7 +36,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           stocks={stocks}/> :
         <Text>Loading...</Text>
         }
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       </View>
     </ScrollView>
   );

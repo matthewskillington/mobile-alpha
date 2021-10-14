@@ -10,6 +10,9 @@ import { searchStocks } from '../api/alphaVantage';
 import debounce from 'lodash.debounce';
 import { StockTabItem } from './StockItem';
 
+const NAME = '2. name';
+const SYMBOL = '1. symbol'
+
 export type StockTabProps = {
     title: string,
     stocks: string[] // array of stock symbols
@@ -66,7 +69,28 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 55,
         backgroundColor: '#FFF',
-    }
+    },
+    suggestionItem: {
+        flexDirection: 'row',
+        padding: 10,
+    },
+    symbolText: {
+        fontWeight: "700",
+        color: '#297d96',
+        flex: 1,
+    },
+    nameText: {
+        flex: 6,
+        textAlign: 'right',
+        marginLeft: 10,
+    },
+    separator: {
+        height: 1,
+        width: '90%',
+        alignSelf: 'center',
+        margin: 5,
+        backgroundColor: '#ccc',
+    },
 })
 
 const deleteItemFromStorage = async (symbol: string): Promise<string[]> => {
@@ -92,14 +116,13 @@ const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
 
     const getSuggestions = useCallback(debounce(async text => {
         if (!text){
-            setSearchSuggestions([]);
             return;
         }
         const bestMatches = await searchStocks(text)
         const suggestions: SearchSuggestion[] = [];
         bestMatches['bestMatches'].forEach((suggestion: any) => {
             suggestions.push(
-                {name: suggestion['2. name'], symbol: suggestion['1. symbol']} 
+                {name: suggestion[NAME], symbol: suggestion[SYMBOL]} 
             );
         });
         setSearchSuggestions(suggestions);
@@ -108,6 +131,12 @@ const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
     const handleSearchChange = (text: string) => {
         setSearchValue(text);
         getSuggestions(text);
+        // lets reset the suggestions if theres no text with no delay
+        if (!text){
+            setSearchSuggestions([]);
+            return;
+        }
+        
     }
     
     if(data){
@@ -140,8 +169,11 @@ const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
                     <View style={styles.suggestionBox}>
                         {searchSuggestions.map((suggestion: SearchSuggestion) => 
                             <>
-                                <Text>{suggestion.symbol}</Text>
-                                <Text>{suggestion.name}</Text>
+                                <View style={styles.suggestionItem}>
+                                    <Text style={styles.symbolText}>{suggestion.symbol}</Text>
+                                    <Text style={styles.nameText}>{suggestion.name}</Text>
+                                </View>
+                                <View style={styles.separator}/>
                             </>
                         )}
                     </View>
