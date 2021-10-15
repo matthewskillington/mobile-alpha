@@ -49,6 +49,7 @@ const StockTabItem = ({name, low, high, isEditing, deleteItem}: StockTabItemProp
             {
             isEditing ? 
             <TouchableOpacity
+                testID="deleteIcon"
                 onPress={() => deleteItem(name)}
                 style={styles.deleteIcon}>
                 <Ionicons name="close-circle" size={24} color="white"/> 
