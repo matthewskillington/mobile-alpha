@@ -170,13 +170,13 @@ const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
                     </View> 
                     <View style={styles.suggestionBox}>
                         {searchSuggestions.map((suggestion: SearchSuggestion) => 
-                            <>
+                            <View key={`${suggestion.name}${suggestion.symbol}`}>
                                 <View style={styles.suggestionItem}>
                                     <Text style={styles.symbolText}>{suggestion.symbol}</Text>
                                     <Text style={styles.nameText}>{suggestion.name}</Text>
                                 </View>
                                 <View style={styles.separator}/>
-                            </>
+                            </View>
                         )}
                     </View>
                 </View> 
