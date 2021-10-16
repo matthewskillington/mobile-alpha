@@ -1,8 +1,8 @@
 import React from 'react';
 import { StockTabItem } from '../StockItem';
-import { render } from 'react-native-testing-library';
-import { not } from 'react-native-reanimated';
+import { fireEvent, render } from 'react-native-testing-library';
 
+const mockDeleteItem = jest.fn()
 
 const renderComponent = (isEditing = false) => {
     return render(
@@ -11,7 +11,7 @@ const renderComponent = (isEditing = false) => {
             low={200}
             high={300}
             isEditing={isEditing}
-            deleteItem={() => {}}/>)
+            deleteItem={mockDeleteItem}/>)
 }
 
 describe('StockItem', () => {
@@ -51,5 +51,12 @@ describe('StockItem', () => {
         const { getByTestId } = renderComponent(true);
         const deleteIcon = getByTestId('deleteIcon');
         expect(deleteIcon).toBeDefined();
+    });
+
+    it('should call delete function when pressing the delete icon', () => {
+        const { getByTestId } = renderComponent(true);
+        const deleteIcon = getByTestId('deleteIcon');
+        fireEvent.press(deleteIcon);
+        expect(mockDeleteItem).toHaveBeenCalledTimes(1);
     });
 })
