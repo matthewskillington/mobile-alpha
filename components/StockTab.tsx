@@ -170,7 +170,9 @@ const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
                     </View> 
                     <View style={styles.suggestionBox}>
                         {searchSuggestions.map((suggestion: SearchSuggestion) => 
-                            <View key={`${suggestion.name}${suggestion.symbol}`}>
+                            <View 
+                                key={`${suggestion.name}${suggestion.symbol}`}
+                                testID="suggestion-item">
                                 <View style={styles.suggestionItem}>
                                     <Text style={styles.symbolText}>{suggestion.symbol}</Text>
                                     <Text style={styles.nameText}>{suggestion.name}</Text>

@@ -66,4 +66,32 @@ describe('StockTab', () => {
         });
     });
 
+    it('should render search suggestions when results are returned', async () => {
+        mockSearchStocks.mockImplementation(() => {
+            return {
+                "bestMatches": [
+                    {
+                        "1. symbol": "TSCO.LON",
+                        "2. name": "Tesco PLC",
+                    },
+                    {
+                        "1. symbol": "TSCDF",
+                        "2. name": "Tesco plc",
+                    },
+                    {
+                        "1. symbol": "TSCDY",
+                        "2. name": "Tesco plc",
+                    }
+                ]
+            }
+        })
+        const { getAllByTestId, getByTestId } = renderComponent();
+        fireEvent.press(getByTestId('editIcon'));
+        fireEvent.changeText(getByTestId('search-bar'), 'AAPL')
+        await waitFor(() => {
+            expect(getAllByTestId('suggestion-item').length).toBe(3);
+        })
+    
+    })
+
 });
