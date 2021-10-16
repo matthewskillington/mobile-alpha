@@ -136,7 +136,6 @@ const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
             setSearchSuggestions([]);
             return;
         }
-        
     }
     
     if(data){
@@ -146,11 +145,13 @@ const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
                     <Text style={styles.title}>{title}</Text>
                     <View style={styles.rightIcons}>
                         <TouchableOpacity
+                            testID="editIcon"
                             style={styles.tabIcon}
                             onPress={() => setIsEditing(!isEditing)}>
                             <AntDesign name="edit" size={32} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity
+                            testID="refreshIcon"
                             style={styles.tabIcon}
                             onPress={() => refetchData()}>
                             <Feather name="refresh-ccw" size={32} color="white" />
@@ -162,6 +163,7 @@ const StockTab = ({title, stocks: initialStocks}: StockTabProps) => {
                     <View style={styles.searchWrapper}>
                         <AntDesign style={styles.searchIcon}name="search1" size={24} color="black" />
                         <TextInput
+                            testID="search-bar"
                             style={styles.searchBar}
                             value={searchValue}
                             onChangeText={handleSearchChange}/>
