@@ -1,8 +1,3 @@
-const arrayRemove = (arr: any, value: any)  => { 
-    
-    return arr.filter((element: any) => { 
-        return element != value; 
-    });
-}
+const arrayRemove = (arr: any, value: any) => arr.filter((element: any) => element != value);
 
 export { arrayRemove };
