@@ -8,7 +8,7 @@
     "eject": "expo eject",
     "test": "jest --watchAll --runInBand --detectOpenHandles",
     "test:ci": "jest",
-    "lint": "eslint './*.{js,ts}' './components' './helpers' './hooks' './screens' './api' --ext '.js,.jsx,.ts,.tsx'"
+    "lint": "eslint './*.{js,ts}' './components' './helpers' './hooks' './screens' './api' './storage' --ext '.js,.jsx,.ts,.tsx'"
   },
   "jest": {
     "preset": "jest-expo"

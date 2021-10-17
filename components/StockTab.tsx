@@ -4,13 +4,11 @@ import {
 } from 'react-native';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useCallback, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import debounce from 'lodash.debounce';
 import { useStockData } from '../hooks/useStockData';
-import { FAV_STOCKS } from '../constants/Values';
-import { arrayRemove } from '../helpers/helper';
 import { searchStocks } from '../api/alphaVantage';
 import { StockTabItem } from './StockItem';
+import { addItemToStorage, deleteItemFromStorage } from '../storage/AsyncStorage';
 
 const NAME = '2. name';
 const SYMBOL = '1. symbol';
@@ -95,14 +93,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const deleteItemFromStorage = async (symbol: string): Promise<string[]> => {
-  let stocks = await AsyncStorage.getItem(FAV_STOCKS);
-  stocks = stocks ? JSON.parse(stocks) : [] as string[];
-  const newStocks = arrayRemove(stocks, symbol);
-  await AsyncStorage.setItem(FAV_STOCKS, JSON.stringify(newStocks));
-  return newStocks || [];
-};
-
 const StockTab = ({ title, stocks: initialStocks }: StockTabProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [stocks, setStocks] = useState(initialStocks);
@@ -113,6 +103,12 @@ const StockTab = ({ title, stocks: initialStocks }: StockTabProps) => {
   const deleteItem = async (symbol: string) => {
     const newStocks = await deleteItemFromStorage(symbol);
     setStocks(newStocks);
+  };
+
+  const addItem = async (symbol: string) => {
+    const newStocks = await addItemToStorage(symbol);
+    setStocks(newStocks);
+    setSearchSuggestions([]);
   };
 
   const getSuggestions = useCallback(debounce(async (text) => {
@@ -174,16 +170,17 @@ const StockTab = ({ title, stocks: initialStocks }: StockTabProps) => {
               </View>
               <View style={styles.suggestionBox}>
                 {searchSuggestions.map((suggestion: SearchSuggestion) => (
-                  <View
+                  <TouchableOpacity
                     key={`${suggestion.name}${suggestion.symbol}`}
                     testID="suggestion-item"
+                    onPress={() => addItem(suggestion.symbol)}
                   >
                     <View style={styles.suggestionItem}>
                       <Text style={styles.symbolText}>{suggestion.symbol}</Text>
                       <Text style={styles.nameText}>{suggestion.name}</Text>
                     </View>
                     <View style={styles.separator} />
-                  </View>
+                  </TouchableOpacity>
                 ))}
               </View>
             </View>
