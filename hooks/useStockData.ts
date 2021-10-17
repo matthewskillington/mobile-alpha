@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import { getQuotePrice } from '../api/alphaVantage';
 
 type StockData = {
-    name: string,
-    high: number,
-    low: number,
-    timeSaved?: number;
-}
+  name: string,
+  high: number,
+  low: number,
+  timeSaved?: number;
+};
 
 const GLOBAL_QUOTE = 'Global Quote';
 const SYMBOL = '01. symbol';
@@ -27,9 +27,10 @@ const stockNeedsUpdate = (date: number) => {
 
 const saveData = async (data: StockData[]) => {
   data.map(async (stock) => {
-    stock.timeSaved = Date.now();
-    const jsonValue = JSON.stringify(stock);
-    await AsyncStorage.setItem(stock.name, jsonValue);
+    const stockToSave = stock;
+    stockToSave.timeSaved = Date.now();
+    const jsonValue = JSON.stringify(stockToSave);
+    await AsyncStorage.setItem(stockToSave.name, jsonValue);
   });
 };
 

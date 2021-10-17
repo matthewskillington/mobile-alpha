@@ -5,12 +5,12 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 
 export type StockTabItemProps = {
-    name: string,
-    low: number,
-    high: number,
-    isEditing: boolean,
-    deleteItem: (symbol: string) => void;
-}
+  name: string,
+  low: number,
+  high: number,
+  isEditing: boolean,
+  deleteItem: (symbol: string) => void;
+};
 
 const styles = StyleSheet.create({
   item: {

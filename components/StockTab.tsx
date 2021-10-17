@@ -16,14 +16,14 @@ const NAME = '2. name';
 const SYMBOL = '1. symbol';
 
 export type StockTabProps = {
-    title: string,
-    stocks: string[] // array of stock symbols
-}
+  title: string,
+  stocks: string[] // array of stock symbols
+};
 
 export type SearchSuggestion = {
-    name: string,
-    symbol: string,
-}
+  name: string,
+  symbol: string,
+};
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -179,9 +179,9 @@ const StockTab = ({ title, stocks: initialStocks }: StockTabProps) => {
                     testID="suggestion-item"
                   >
                     <View style={styles.suggestionItem}>
-                          <Text style={styles.symbolText}>{suggestion.symbol}</Text>
-                          <Text style={styles.nameText}>{suggestion.name}</Text>
-                        </View>
+                      <Text style={styles.symbolText}>{suggestion.symbol}</Text>
+                      <Text style={styles.nameText}>{suggestion.name}</Text>
+                    </View>
                     <View style={styles.separator} />
                   </View>
                 ))}

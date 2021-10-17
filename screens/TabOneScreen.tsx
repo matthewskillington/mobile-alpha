@@ -9,6 +9,26 @@ import { View } from '../components/Themed';
 import { FAV_STOCKS } from '../constants/Values';
 import { RootTabScreenProps } from '../types';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 10,
+    minHeight: 1000,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: '80%',
+  },
+});
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [stocks, setStocks] = useState([]);
 
@@ -41,22 +61,3 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    padding: 10,
-    minHeight: 1000,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});

@@ -6,10 +6,12 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "airbnb"
+        "airbnb",
+        "airbnb-typescript"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
+        "project": "./tsconfig.json",
         "ecmaFeatures": {
             "jsx": true
         },
@@ -22,5 +24,8 @@
         "jest"
     ],
     "rules": {
+        "import/prefer-default-export": 0,
+        "max-len": 0,
+        "import/no-extraneous-dependencies": 0
     }
 }
