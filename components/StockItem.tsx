@@ -55,9 +55,8 @@ const roundPercentage = (value: string): string => {
 
 const getChangePercentageElement = (changePercentage: string): JSX.Element => {
   const roundedPercentage = roundPercentage(changePercentage);
-  return roundedPercentage.charAt(0) === '-'
-    ? <Text style={[styles.itemText, styles.changeText, { marginLeft: 'auto', color: '#ff5252' }]}>{roundedPercentage}</Text>
-    : <Text style={[styles.itemText, styles.changeText, { marginLeft: 'auto', color: '#39cc6d' }]}>{roundedPercentage}</Text>;
+  const color = roundedPercentage.charAt(0) === '-' ? '#ff5252' : '#39cc6d';
+  return <Text style={[styles.itemText, styles.changeText, { marginLeft: 'auto', color }]}>{roundedPercentage}</Text>;
 };
 
 const StockTabItem = ({
