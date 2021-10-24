@@ -191,8 +191,6 @@ const StockTab = ({ title, stocks: initialStocks }: StockTabProps) => {
         {data.map((stock) => (
           <StockTabItem
             symbol={stock.symbol}
-            low={stock.low}
-            high={stock.high}
             price={stock.price}
             changePercentage={stock.changePercentage}
             key={stock.symbol}

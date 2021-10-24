@@ -3,12 +3,13 @@ import { fireEvent, render } from 'react-native-testing-library';
 import { StockTabItem } from '../StockItem';
 
 const mockDeleteItem = jest.fn();
+let mockChangePercentage = '0.5083%';
 
 const renderComponent = (isEditing = false) => render(
   <StockTabItem
     symbol="title"
-    low={200}
-    high={300}
+    price={300}
+    changePercentage={mockChangePercentage}
     isEditing={isEditing}
     deleteItem={mockDeleteItem}
   />,
@@ -27,18 +28,30 @@ describe('StockItem', () => {
     expect(title.props.children).toBe('title');
   });
 
-  it('should render low price', () => {
+  it('should render price', () => {
     const { getByText } = renderComponent();
-    const lowPrice = getByText('200');
-    expect(lowPrice).toBeDefined();
-    expect(lowPrice.props.children).toBe(200);
+    const price = getByText('300');
+    expect(price).toBeDefined();
+    expect(price.props.children).toBe(300);
   });
 
-  it('should render high price', () => {
+  it('should render change percentage with correct formatting if positive', () => {
     const { getByText } = renderComponent();
-    const highPrice = getByText('300');
-    expect(highPrice).toBeDefined();
-    expect(highPrice.props.children).toBe(300);
+    const changePercentage = getByText('0.51%');
+    expect(changePercentage).toBeDefined();
+    expect(changePercentage.props.style).toEqual(
+      expect.arrayContaining([expect.objectContaining({ marginLeft: 'auto', color: '#39cc6d' })]),
+    );
+  });
+
+  it('should render change percentage with correct formatting if negative', () => {
+    mockChangePercentage = '-1.4536%';
+    const { getByText } = renderComponent();
+    const changePercentage = getByText('-1.45%');
+    expect(changePercentage).toBeDefined();
+    expect(changePercentage.props.style).toEqual(
+      expect.arrayContaining([expect.objectContaining({ marginLeft: 'auto', color: '#ff5252' })]),
+    );
   });
 
   it('should not render delete icon if isEditing is set to false', () => {

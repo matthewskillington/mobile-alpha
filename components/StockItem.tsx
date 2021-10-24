@@ -6,9 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 export type StockTabItemProps = {
   symbol: string,
-  name?: string,
-  low: number,
-  high: number,
   price: number,
   changePercentage: string,
   isEditing: boolean,
