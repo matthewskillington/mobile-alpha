@@ -6,7 +6,7 @@ const mockDeleteItem = jest.fn();
 
 const renderComponent = (isEditing = false) => render(
   <StockTabItem
-    name="title"
+    symbol="title"
     low={200}
     high={300}
     isEditing={isEditing}

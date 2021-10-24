@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   },
   searchAndSuggestionWrapper: {
     position: 'relative',
+    marginBottom: 10,
   },
   searchBar: {
     padding: 5,
@@ -189,10 +190,12 @@ const StockTab = ({ title, stocks: initialStocks }: StockTabProps) => {
 
         {data.map((stock) => (
           <StockTabItem
-            name={stock.name}
+            symbol={stock.symbol}
             low={stock.low}
             high={stock.high}
-            key={stock.name}
+            price={stock.price}
+            changePercentage={stock.changePercentage}
+            key={stock.symbol}
             isEditing={isEditing}
             deleteItem={deleteItem}
           />
