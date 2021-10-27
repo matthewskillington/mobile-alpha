@@ -3,9 +3,12 @@ import { useEffect, useState } from 'react';
 import { getQuotePrice } from '../api/alphaVantage';
 
 type StockData = {
-  name: string,
-  high: number,
-  low: number,
+  symbol: string;
+  high: number;
+  low: number;
+  price: number;
+  changePercentage: string;
+  name?: string;
   timeSaved?: number;
 };
 
@@ -13,6 +16,8 @@ const GLOBAL_QUOTE = 'Global Quote';
 const SYMBOL = '01. symbol';
 const HIGH = '03. high';
 const LOW = '04. low';
+const PRICE = '05. price';
+const CHANGEPERCENT = '10. change percent';
 
 const TenMinutes = 600000;
 
@@ -30,7 +35,7 @@ const saveData = async (data: StockData[]) => {
     const stockToSave = stock;
     stockToSave.timeSaved = Date.now();
     const jsonValue = JSON.stringify(stockToSave);
-    await AsyncStorage.setItem(stockToSave.name, jsonValue);
+    await AsyncStorage.setItem(stockToSave.symbol, jsonValue);
   });
 };
 
@@ -61,10 +66,20 @@ const useStockData = (symbols: string[]) => {
     await Promise.all(stocksToFetchFromAV.map(async (symbol: string) => {
       try {
         const result = await getQuotePrice(symbol);
+        if (result.Note) {
+          console.log('API limit reached');
+          return;
+        }
         const globalQuote = result[GLOBAL_QUOTE];
         // Check there was a symbol returned from the api, if not its likely the response was malformed
         if (globalQuote[SYMBOL]) {
-          stockData.push({ name: globalQuote[SYMBOL], high: globalQuote[HIGH], low: globalQuote[LOW] });
+          stockData.push({
+            symbol: globalQuote[SYMBOL],
+            high: globalQuote[HIGH],
+            low: globalQuote[LOW],
+            price: globalQuote[PRICE],
+            changePercentage: globalQuote[CHANGEPERCENT],
+          });
         } else {
           throw new Error(`API response was malformed for ${symbol}`);
         }
