@@ -10,6 +10,7 @@ export type StockTabItemProps = {
   changePercentage: string,
   isEditing: boolean,
   deleteItem: (symbol: string) => void;
+  onPress: (symbol: string) => void;
 };
 
 const styles = StyleSheet.create({
@@ -60,9 +61,12 @@ const getChangePercentageElement = (changePercentage: string): JSX.Element => {
 };
 
 const StockTabItem = ({
-  symbol, price, changePercentage, isEditing, deleteItem,
+  symbol, price, changePercentage, isEditing, deleteItem, onPress,
 }: StockTabItemProps) => (
-  <View style={styles.item}>
+  <TouchableOpacity
+    style={styles.item}
+    onPress={() => onPress(symbol)}
+  >
     <View style={styles.itemContent}>
       <Text style={[styles.itemText, styles.symbolText]}>{symbol}</Text>
       <View style={styles.itemPriceWrapper}>
@@ -83,7 +87,7 @@ const StockTabItem = ({
         )
         : null
       }
-  </View>
+  </TouchableOpacity>
 );
 
 export { StockTabItem };

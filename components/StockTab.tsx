@@ -10,12 +10,15 @@ import { searchStocks } from '../api/alphaVantage';
 import { StockTabItem } from './StockItem';
 import { addItemToStorage, deleteItemFromStorage } from '../storage/AsyncStorage';
 
+import { RootTabNavigation } from '../types';
+
 const NAME = '2. name';
 const SYMBOL = '1. symbol';
 
 export type StockTabProps = {
   title: string,
   stocks: string[] // array of stock symbols
+  navigation: RootTabNavigation;
 };
 
 export type SearchSuggestion = {
@@ -94,7 +97,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const StockTab = ({ title, stocks: initialStocks }: StockTabProps) => {
+const StockTab = ({ title, stocks: initialStocks, navigation }: StockTabProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [stocks, setStocks] = useState(initialStocks);
   const [searchValue, setSearchValue] = useState('');
@@ -110,6 +113,10 @@ const StockTab = ({ title, stocks: initialStocks }: StockTabProps) => {
     const newStocks = await addItemToStorage(symbol);
     setStocks(newStocks);
     setSearchSuggestions([]);
+  };
+
+  const onStockPress = (symbol: string) => {
+    navigation.navigate('Modal', { symbol });
   };
 
   const getSuggestions = useCallback(debounce(async (text) => {
@@ -196,6 +203,7 @@ const StockTab = ({ title, stocks: initialStocks }: StockTabProps) => {
             key={stock.symbol}
             isEditing={isEditing}
             deleteItem={deleteItem}
+            onPress={onStockPress}
           />
         ))}
       </View>
