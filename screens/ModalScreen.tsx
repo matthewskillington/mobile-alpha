@@ -4,17 +4,21 @@ import { Platform, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { roundPercentage } from '../helpers/helper';
+import { useStockData } from '../hooks/useStockData';
 import { ModalScreenRouteProps } from '../types';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  titleWrapper: {
+    flexDirection: 'row',
   },
   separator: {
     marginVertical: 30,
@@ -25,15 +29,25 @@ const styles = StyleSheet.create({
 
 export default function ModalScreen({ route }: ModalScreenRouteProps) {
   const { symbol } = route.params;
+  const { data } = useStockData([symbol]);
 
+  if (data) {
+    const stock = data[0];
+    return (
+      <View style={styles.container}>
+        <View style={styles.titleWrapper}>
+          <Text style={styles.title}>{symbol}</Text>
+          <Text style={[styles.title, { marginLeft: 'auto' }]}>{roundPercentage(stock.changePercentage)}</Text>
+        </View>
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <EditScreenInfo path="/screens/ModalScreen.tsx" />
+
+        {/* Use a light status bar on iOS to account for the black space above the modal */}
+        <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      </View>
+    );
+  }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{symbol}</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/ModalScreen.tsx" />
-
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-    </View>
+    <Text>Loading...</Text>
   );
 }

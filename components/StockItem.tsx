@@ -3,6 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { round, roundPercentage } from '../helpers/helper';
 
 export type StockTabItemProps = {
   symbol: string,
@@ -45,14 +46,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
-
-const round = (value: number): number => Math.round(value * 100) / 100;
-
-const roundPercentage = (value: string): string => {
-  const float = parseFloat(value);
-  const rounded = round(float);
-  return `${rounded}%`;
-};
 
 const getChangePercentageElement = (changePercentage: string): JSX.Element => {
   const roundedPercentage = roundPercentage(changePercentage);
