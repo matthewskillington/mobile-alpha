@@ -32,12 +32,11 @@ export default function ModalScreen({ route }: ModalScreenRouteProps) {
   const { data } = useStockData([symbol]);
 
   if (data) {
-    const stock = data[0];
     return (
       <View style={styles.container}>
         <View style={styles.titleWrapper}>
           <Text style={styles.title}>{symbol}</Text>
-          <Text style={[styles.title, { marginLeft: 'auto' }]}>{roundPercentage(stock.changePercentage)}</Text>
+          <Text style={[styles.title, { marginLeft: 'auto' }]}>{roundPercentage(data[0].changePercentage)}</Text>
         </View>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <EditScreenInfo path="/screens/ModalScreen.tsx" />

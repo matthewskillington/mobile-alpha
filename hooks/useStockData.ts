@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { getQuotePrice } from '../api/alphaVantage';
@@ -94,7 +95,7 @@ const useStockData = (symbols: string[]) => {
 
   useEffect(() => {
     fetchData();
-  }, [symbols]);
+  }, []);
 
   return { data, fetchData };
 };
