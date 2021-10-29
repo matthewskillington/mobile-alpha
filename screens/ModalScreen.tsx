@@ -1,8 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { Dimensions, StyleSheet, useColorScheme } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
+import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { roundPercentage } from '../helpers/helper';
 import { useStockData } from '../hooks/useStockData';
@@ -19,30 +20,73 @@ const styles = StyleSheet.create({
   },
   titleWrapper: {
     flexDirection: 'row',
+    marginBottom: 20,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  graphWrapper: {
+    flex: 1,
+    width: '100%',
   },
 });
+const getChartConfig = (theme: 'light' | 'dark'): AbstractChartConfig => {
+  if (theme === 'light') {
+    return {
+      backgroundGradientFrom: '#1E2923',
+      backgroundGradientFromOpacity: 0,
+      backgroundGradientTo: '#fff',
+      backgroundGradientToOpacity: 0,
+      color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+      labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+      barPercentage: 0.5,
+      useShadowColorFromDataset: true,
+    };
+  }
+  return {
+    backgroundGradientFrom: '#1E2923',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#fff',
+    backgroundGradientToOpacity: 0,
+    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    barPercentage: 0.5,
+    useShadowColorFromDataset: true,
+  };
+};
+
+const chartData = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+  datasets: [
+    {
+      data: [20, 45, 28, 80, 99, 43],
+      color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+      strokeWidth: 4, // optional
+    },
+  ],
+};
+
+const screenWidth = Dimensions.get('window').width;
 
 export default function ModalScreen({ route }: ModalScreenRouteProps) {
+  const theme = useColorScheme();
   const { symbol } = route.params;
-  const { data } = useStockData([symbol]);
+  const [stock] = useState([symbol]);
+  const { data } = useStockData(stock);
 
-  if (data) {
+  if (data && theme) {
     return (
       <View style={styles.container}>
         <View style={styles.titleWrapper}>
           <Text style={styles.title}>{symbol}</Text>
           <Text style={[styles.title, { marginLeft: 'auto' }]}>{roundPercentage(data[0].changePercentage)}</Text>
         </View>
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <EditScreenInfo path="/screens/ModalScreen.tsx" />
-
-        {/* Use a light status bar on iOS to account for the black space above the modal */}
-        <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+        <View style={styles.graphWrapper}>
+          <LineChart
+            data={chartData}
+            width={screenWidth}
+            height={700}
+            chartConfig={getChartConfig(theme)}
+            bezier
+          />
+        </View>
       </View>
     );
   }
