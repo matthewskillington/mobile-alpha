@@ -5,7 +5,7 @@ import {
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { useStockData } from '../hooks/useStockData';
+import { useQuoteData } from '../hooks/useQuoteData';
 import { searchStocks } from '../api/alphaVantage';
 import { StockTabItem } from './StockItem';
 import { addItemToStorage, deleteItemFromStorage } from '../storage/AsyncStorage';
@@ -102,7 +102,7 @@ const StockTab = ({ title, stocks: initialStocks, navigation }: StockTabProps) =
   const [stocks, setStocks] = useState(initialStocks);
   const [searchValue, setSearchValue] = useState('');
   const [searchSuggestions, setSearchSuggestions] = useState<SearchSuggestion[]>([]);
-  const { data, fetchData: refetchData } = useStockData(stocks);
+  const { data, fetchData: refetchData } = useQuoteData(stocks);
 
   const deleteItem = async (symbol: string) => {
     const newStocks = await deleteItemFromStorage(symbol);

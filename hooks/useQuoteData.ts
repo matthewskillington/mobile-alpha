@@ -40,7 +40,7 @@ const saveData = async (data: StockData[]) => {
   });
 };
 
-const useStockData = (symbols: string[]) => {
+const useQuoteData = (symbols: string[]) => {
   const [data, setData] = useState<StockData[] | undefined>();
   const stockData: StockData[] = [];
   const stocksToFetchFromAV: string[] = [];
@@ -100,4 +100,4 @@ const useStockData = (symbols: string[]) => {
   return { data, fetchData };
 };
 
-export { useStockData };
+export { useQuoteData };

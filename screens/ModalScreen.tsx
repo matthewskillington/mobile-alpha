@@ -6,7 +6,7 @@ import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 
 import { Text, View } from '../components/Themed';
 import { roundPercentage } from '../helpers/helper';
-import { useStockData } from '../hooks/useStockData';
+import { useTimeSeriesData } from '../hooks/useTimeSeriesData';
 import { ModalScreenRouteProps } from '../types';
 
 const styles = StyleSheet.create({
@@ -68,15 +68,15 @@ const screenWidth = Dimensions.get('window').width;
 export default function ModalScreen({ route }: ModalScreenRouteProps) {
   const theme = useColorScheme();
   const { symbol } = route.params;
-  const [stock] = useState([symbol]);
-  const { data } = useStockData(stock);
+  const [stock] = useState(symbol);
+  const { data } = useTimeSeriesData(stock);
 
   if (data && theme) {
     return (
       <View style={styles.container}>
         <View style={styles.titleWrapper}>
           <Text style={styles.title}>{symbol}</Text>
-          <Text style={[styles.title, { marginLeft: 'auto' }]}>{roundPercentage(data[0].changePercentage)}</Text>
+          <Text style={[styles.title, { marginLeft: 'auto' }]}>{/* roundPercentage(data[0].changePercentage) */}</Text>
         </View>
         <View style={styles.graphWrapper}>
           <LineChart
