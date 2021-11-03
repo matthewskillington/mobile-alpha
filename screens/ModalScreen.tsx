@@ -5,7 +5,6 @@ import { LineChart } from 'react-native-chart-kit';
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 
 import { Text, View } from '../components/Themed';
-import { roundPercentage } from '../helpers/helper';
 import { useTimeSeriesData } from '../hooks/useTimeSeriesData';
 import { ModalScreenRouteProps } from '../types';
 
