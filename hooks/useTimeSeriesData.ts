@@ -30,8 +30,7 @@ const getLabels = (keys: string[]): string [] => {
 };
 
 // TODO: Update to support multiple timespans
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const convertTimeSeriesDailyToGraphData = (data: TimeSeriesDaily) => {
+const convertTimeSeriesDailyToGraphData = (data: TimeSeriesDaily, timeSpan = '3 months') => {
   const keys = Object.keys(data);
 
   const labels = getLabels(keys);
