@@ -44,6 +44,7 @@ const convertTimeSeriesDailyToGraphData = (data: TimeSeriesDaily, timeSpan: Time
 };
 
 const useTimeSeriesData = (symbol: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState({});
 
   const fetchData = async () => {
