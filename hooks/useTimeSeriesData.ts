@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { useEffect, useState } from 'react';
 import { getDailyPrice } from '../api/alphaVantage';
+import { Months } from '../types';
 
 const TIME_SERIES_DAILY = 'Time Series (Daily)';
 
@@ -16,19 +17,18 @@ type TimeSeriesDaily = {
 
 type TimeSpan = '1 month' | '3 months' | '6 months' | '1 year';
 
-const getLabels = (keys: string[]) => {
+const getLabels = (keys: string[]): string [] => {
   const firstDay = new Date(Date.parse(keys[0]));
-  const threeMonthsAgo = new Date(
-    new Date(firstDay).getFullYear(),
-    new Date(firstDay).getMonth() - 3,
-    new Date(firstDay).getDate(),
-  );
-  const year = threeMonthsAgo.getUTCFullYear();
-  const month = threeMonthsAgo.getUTCMonth();
-  const day = threeMonthsAgo.getUTCDate();
-  const lastKey = `${year}-${month}-${day}`;
-  const ThreeMonthsOfKeys = keys.slice(0, keys.indexOf(lastKey));
-  console.log('👀', ThreeMonthsOfKeys.length);
+  const firstMonth = firstDay.getUTCMonth();
+  const labels: string [] = [];
+  for (let i = 0; i < 3; i += 1) {
+    if (Months[firstMonth - i] === undefined) {
+      labels.push(Months[firstMonth - (i + 11)]);
+    } else {
+      labels.push(Months[firstMonth - i]);
+    }
+  }
+  return labels;
 };
 
 // TODO: Update to support multiple timespans
@@ -36,6 +36,7 @@ const convertTimeSeriesDailyToGraphData = (data: TimeSeriesDaily, timeSpan: Time
   const keys = Object.keys(data);
 
   const labels = getLabels(keys);
+  console.log(labels);
   // const result = keys.map((key) => ({
   //   label: getLabel(data[key]),
   //   averagePrice: getAveragePrice(data[key]),
@@ -49,6 +50,7 @@ const useTimeSeriesData = (symbol: string) => {
     const result = await getDailyPrice(symbol);
     if (result.Note) {
       console.log('API limit reached');
+      return;
     }
     const timeSeriesDaily = result[TIME_SERIES_DAILY];
     convertTimeSeriesDailyToGraphData(timeSeriesDaily);
