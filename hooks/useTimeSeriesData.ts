@@ -15,8 +15,6 @@ type TimeSeriesDaily = {
   }
 };
 
-type TimeSpan = '1 month' | '3 months' | '6 months' | '1 year';
-
 const getLabels = (keys: string[]): string [] => {
   const firstDay = new Date(Date.parse(keys[0]));
   const firstMonth = firstDay.getUTCMonth();
