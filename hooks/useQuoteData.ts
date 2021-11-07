@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
-import { getQuotePrice } from '../api/alphaVantage';
+import { getPrices } from '../api/alphaVantage';
 
 type StockData = {
   symbol: string;
@@ -66,7 +66,7 @@ const useQuoteData = (symbols: string[]) => {
 
     await Promise.all(stocksToFetchFromAV.map(async (symbol: string) => {
       try {
-        const result = await getQuotePrice(symbol);
+        const result = await getPrices(symbol, 'GLOBAL_QUOTE');
         if (result.Note) {
           console.log('API limit reached');
           return;

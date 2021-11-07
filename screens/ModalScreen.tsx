@@ -5,8 +5,7 @@ import { LineChart } from 'react-native-chart-kit';
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 
 import { Text, View } from '../components/Themed';
-import { roundPercentage } from '../helpers/helper';
-import { useTimeSeriesData } from '../hooks/useTimeSeriesData';
+import { useGraphData } from '../hooks/useGraphData';
 import { ModalScreenRouteProps } from '../types';
 
 const styles = StyleSheet.create({
@@ -27,6 +26,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
+
 const getChartConfig = (theme: 'light' | 'dark'): AbstractChartConfig => {
   if (theme === 'light') {
     return {
@@ -52,24 +52,13 @@ const getChartConfig = (theme: 'light' | 'dark'): AbstractChartConfig => {
   };
 };
 
-const chartData = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-  datasets: [
-    {
-      data: [20, 45, 28, 80, 99, 43],
-      color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-      strokeWidth: 4, // optional
-    },
-  ],
-};
-
 const screenWidth = Dimensions.get('window').width;
 
 export default function ModalScreen({ route }: ModalScreenRouteProps) {
   const theme = useColorScheme();
   const { symbol } = route.params;
   const [stock] = useState(symbol);
-  const { data } = useTimeSeriesData(stock);
+  const { data } = useGraphData(stock);
 
   if (data && theme) {
     return (
@@ -80,7 +69,7 @@ export default function ModalScreen({ route }: ModalScreenRouteProps) {
         </View>
         <View style={styles.graphWrapper}>
           <LineChart
-            data={chartData}
+            data={data}
             width={screenWidth}
             height={700}
             chartConfig={getChartConfig(theme)}
