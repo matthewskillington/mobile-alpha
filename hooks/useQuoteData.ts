@@ -2,6 +2,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { getPrices } from '../api/alphaVantage';
+import { dataNeedsUpdate } from '../helpers/helper';
 
 type StockData = {
   symbol: string;
@@ -20,23 +21,12 @@ const LOW = '04. low';
 const PRICE = '05. price';
 const CHANGEPERCENT = '10. change percent';
 
-const TenMinutes = 600000;
-
-// If we last updated the stock a long time ago return true
-const stockNeedsUpdate = (date: number) => {
-  const timeDiff = Date.now() - date;
-  if (timeDiff > TenMinutes) {
-    return true;
-  }
-  return false;
-};
-
 const saveData = async (data: StockData[]) => {
   data.map(async (stock) => {
     const stockToSave = stock;
     stockToSave.timeSaved = Date.now();
-    const jsonValue = JSON.stringify(stockToSave);
-    await AsyncStorage.setItem(stockToSave.symbol, jsonValue);
+    const stringValue = JSON.stringify(stockToSave);
+    await AsyncStorage.setItem(`${stockToSave.symbol}Quote`, stringValue);
   });
 };
 
@@ -49,9 +39,9 @@ const useQuoteData = (symbols: string[]) => {
     // let's see if the data is already held locally and save us unneccessarily hitting the api
     await Promise.all(symbols.map(async (symbol: string) => {
       try {
-        const stock = await AsyncStorage.getItem(symbol);
+        const stock = await AsyncStorage.getItem(`${symbol}Quote`);
         const stockJson = stock != null ? JSON.parse(stock) as StockData : null;
-        const needsUpdate = stockJson?.timeSaved ? stockNeedsUpdate(stockJson.timeSaved) : true;
+        const needsUpdate = stockJson?.timeSaved ? dataNeedsUpdate(stockJson.timeSaved) : true;
 
         if (!stockJson || needsUpdate) {
           stocksToFetchFromAV.push(symbol);
