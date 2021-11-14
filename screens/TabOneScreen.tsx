@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [stocks, setStocks] = useState([]);
 
@@ -54,6 +53,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
             <StockTab
               title="Market data"
               stocks={stocks}
+              navigation={navigation}
             />
           )
           : <Text>Loading...</Text>}

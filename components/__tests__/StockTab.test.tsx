@@ -7,8 +7,8 @@ const mockStockData: any[] = [];
 const mockFetch = jest.fn();
 const mockSearchStocks = jest.fn();
 
-jest.mock('../../hooks/useStockData', () => ({
-  useStockData: () => ({
+jest.mock('../../hooks/useQuoteData', () => ({
+  useQuoteData: () => ({
     data: mockStockData,
     fetchData: () => mockFetch(),
   }),

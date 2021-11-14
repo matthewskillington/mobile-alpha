@@ -3,6 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { round, roundPercentage } from '../helpers/helper';
 
 export type StockTabItemProps = {
   symbol: string,
@@ -10,6 +11,7 @@ export type StockTabItemProps = {
   changePercentage: string,
   isEditing: boolean,
   deleteItem: (symbol: string) => void;
+  onPress: (symbol: string) => void;
 };
 
 const styles = StyleSheet.create({
@@ -45,14 +47,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const round = (value: number): number => Math.round(value * 100) / 100;
-
-const roundPercentage = (value: string): string => {
-  const float = parseFloat(value);
-  const rounded = round(float);
-  return `${rounded}%`;
-};
-
 const getChangePercentageElement = (changePercentage: string): JSX.Element => {
   const roundedPercentage = roundPercentage(changePercentage);
   const color = roundedPercentage.charAt(0) === '-' ? '#ff5252' : '#39cc6d';
@@ -60,9 +54,12 @@ const getChangePercentageElement = (changePercentage: string): JSX.Element => {
 };
 
 const StockTabItem = ({
-  symbol, price, changePercentage, isEditing, deleteItem,
+  symbol, price, changePercentage, isEditing, deleteItem, onPress,
 }: StockTabItemProps) => (
-  <View style={styles.item}>
+  <TouchableOpacity
+    style={styles.item}
+    onPress={() => onPress(symbol)}
+  >
     <View style={styles.itemContent}>
       <Text style={[styles.itemText, styles.symbolText]}>{symbol}</Text>
       <View style={styles.itemPriceWrapper}>
@@ -83,7 +80,7 @@ const StockTabItem = ({
         )
         : null
       }
-  </View>
+  </TouchableOpacity>
 );
 
 export { StockTabItem };

@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
-import { getQuotePrice } from '../api/alphaVantage';
+import { getPrices } from '../api/alphaVantage';
+import { dataNeedsUpdate } from '../helpers/helper';
 
 type StockData = {
   symbol: string;
@@ -19,27 +21,16 @@ const LOW = '04. low';
 const PRICE = '05. price';
 const CHANGEPERCENT = '10. change percent';
 
-const TenMinutes = 600000;
-
-// If we last updated the stock a long time ago return true
-const stockNeedsUpdate = (date: number) => {
-  const timeDiff = Date.now() - date;
-  if (timeDiff > TenMinutes) {
-    return true;
-  }
-  return false;
-};
-
 const saveData = async (data: StockData[]) => {
   data.map(async (stock) => {
     const stockToSave = stock;
     stockToSave.timeSaved = Date.now();
-    const jsonValue = JSON.stringify(stockToSave);
-    await AsyncStorage.setItem(stockToSave.symbol, jsonValue);
+    const stringValue = JSON.stringify(stockToSave);
+    await AsyncStorage.setItem(`${stockToSave.symbol}Quote`, stringValue);
   });
 };
 
-const useStockData = (symbols: string[]) => {
+const useQuoteData = (symbols: string[]) => {
   const [data, setData] = useState<StockData[] | undefined>();
   const stockData: StockData[] = [];
   const stocksToFetchFromAV: string[] = [];
@@ -48,9 +39,9 @@ const useStockData = (symbols: string[]) => {
     // let's see if the data is already held locally and save us unneccessarily hitting the api
     await Promise.all(symbols.map(async (symbol: string) => {
       try {
-        const stock = await AsyncStorage.getItem(symbol);
+        const stock = await AsyncStorage.getItem(`${symbol}Quote`);
         const stockJson = stock != null ? JSON.parse(stock) as StockData : null;
-        const needsUpdate = stockJson?.timeSaved ? stockNeedsUpdate(stockJson.timeSaved) : true;
+        const needsUpdate = stockJson?.timeSaved ? dataNeedsUpdate(stockJson.timeSaved) : true;
 
         if (!stockJson || needsUpdate) {
           stocksToFetchFromAV.push(symbol);
@@ -65,7 +56,7 @@ const useStockData = (symbols: string[]) => {
 
     await Promise.all(stocksToFetchFromAV.map(async (symbol: string) => {
       try {
-        const result = await getQuotePrice(symbol);
+        const result = await getPrices(symbol, 'GLOBAL_QUOTE');
         if (result.Note) {
           console.log('API limit reached');
           return;
@@ -99,4 +90,4 @@ const useStockData = (symbols: string[]) => {
   return { data, fetchData };
 };
 
-export { useStockData };
+export { useQuoteData };
