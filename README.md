@@ -1,4 +1,4 @@
-### Mobile-Alpha
+# Mobile-Alpha
 
 - React native mobile application utilising the Alpha Vantage API to display stock and commodity movements
 - Claim your free API key to run this at https://www.alphavantage.co/support/#api-key and add it to your .env 
