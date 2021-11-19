@@ -15,6 +15,8 @@ export type SearchSuggestion = {
 };
 
 export type SearchComponentProps = {
+  includeBorders?: boolean;
+  setSelectedAsInputValue?: boolean; // Set the input value to be the selected item
   selectItem?: (symbol: string) => void // Provide function which handles what to do with the selected item
 };
 
@@ -22,12 +24,17 @@ const styles = StyleSheet.create({
   searchWrapper: {
     backgroundColor: '#fff',
     flexDirection: 'row',
-    marginTop: 10,
-
+    marginTop: 0,
   },
   searchAndSuggestionWrapper: {
     position: 'relative',
     marginBottom: 10,
+    marginTop: 10,
+
+  },
+  border: {
+    borderColor: '#666',
+    borderWidth: 1,
   },
   searchBar: {
     padding: 5,
@@ -41,7 +48,7 @@ const styles = StyleSheet.create({
   suggestionBox: {
     width: '100%',
     position: 'absolute',
-    top: 55,
+    top: 45,
     backgroundColor: '#FFF',
   },
   suggestionItem: {
@@ -68,6 +75,8 @@ const styles = StyleSheet.create({
 });
 
 const SearchComponent = ({
+  includeBorders = false,
+  setSelectedAsInputValue = false,
   selectItem,
 }: SearchComponentProps) => {
   const [searchSuggestions, setSearchSuggestions] = useState<SearchSuggestion[]>([]);
@@ -100,11 +109,14 @@ const SearchComponent = ({
     if (selectItem) {
       selectItem(symbol);
     }
+    if (setSelectedAsInputValue) {
+      setSearchValue(symbol);
+    }
     setSearchSuggestions([]);
   };
 
   return (
-    <View style={styles.searchAndSuggestionWrapper}>
+    <View style={[styles.searchAndSuggestionWrapper, includeBorders ? styles.border : null]}>
       <View style={styles.searchWrapper}>
         <AntDesign style={styles.searchIcon} name="search1" size={24} color="black" />
         <TextInput
@@ -114,7 +126,7 @@ const SearchComponent = ({
           onChangeText={handleSearchChange}
         />
       </View>
-      <View style={styles.suggestionBox}>
+      <View style={[styles.suggestionBox, includeBorders ? styles.border : null]}>
         {searchSuggestions.map((suggestion: SearchSuggestion) => (
           <TouchableOpacity
             key={`${suggestion.name}${suggestion.symbol}`}

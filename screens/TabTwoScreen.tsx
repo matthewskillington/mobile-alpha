@@ -1,24 +1,18 @@
 import { AntDesign } from '@expo/vector-icons';
 import * as React from 'react';
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { CustomInput } from '../components/CustomInput';
+import { Button, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SearchComponent } from '../components/SearchComponent';
 
 import { Text, View } from '../components/Themed';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    minHeight: 1000,
   },
   formWrapper: {
     marginVertical: 10,
@@ -33,24 +27,46 @@ const styles = StyleSheet.create({
   infoIcon: {
     marginRight: 10,
   },
+  formBodyWrapper: {
+    marginVertical: 10,
+  },
+  inputHeading: {
+    fontSize: 20,
+    marginVertical: 5,
+    fontWeight: '300',
+  },
 });
 
 export default function TabTwoScreen() {
-  const [test, setTest] = useState('');
+  const [selectedStock, setSelectedStock] = useState('');
+
+  const handleSelectItem = (symbol: string) => {
+    setSelectedStock(symbol);
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.formWrapper}>
-        <View style={styles.headingWrapper}>
-          <AntDesign name="infocirlce" size={20} color="#4c94d6" style={styles.infoIcon} />
-          <Text style={styles.heading}>Fill in the form to create estimates</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.formWrapper}>
+          <View style={styles.headingWrapper}>
+            <AntDesign name="infocirlce" size={20} color="#4c94d6" style={styles.infoIcon} />
+            <Text style={styles.heading}>Fill in the form to create estimates</Text>
+          </View>
+          <View style={styles.formBodyWrapper}>
+            <Text style={styles.inputHeading}>Select Stock</Text>
+            <SearchComponent
+              includeBorders
+              setSelectedAsInputValue
+              selectItem={handleSelectItem}
+            />
+          </View>
+          <Button
+            onPress={() => {}}
+            title="Submit"
+
+          />
         </View>
-        {/* <CustomInput
-          label="Test"
-          placeholder="myplaceholder"
-          value={test}
-          setValue={setTest}
-        /> */}
       </View>
-    </View>
+    </ScrollView>
   );
 }
