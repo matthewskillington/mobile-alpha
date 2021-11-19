@@ -12,6 +12,7 @@ const renderComponent = (isEditing = false) => render(
     changePercentage={mockChangePercentage}
     isEditing={isEditing}
     deleteItem={mockDeleteItem}
+    onPress={() => {}}
   />,
 );
 

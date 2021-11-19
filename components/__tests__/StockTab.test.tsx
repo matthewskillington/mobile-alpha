@@ -18,6 +18,8 @@ jest.mock('../../api/alphaVantage', () => ({
   searchStocks: (text: string) => mockSearchStocks(text),
 }));
 
+const mockNavigation = jest.fn() as any;
+
 // Mock debounce
 _.debounce = jest.fn((fn) => fn) as any;
 
@@ -25,6 +27,7 @@ const renderComponent = () => render(
   <StockTab
     title="testTitle"
     stocks={['AAPL', 'IBM']}
+    navigation={mockNavigation}
   />,
 );
 
