@@ -6,6 +6,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SearchComponent } from '../components/SearchComponent';
 
 import { Text, View } from '../components/Themed';
+import { RootTabScreenProps } from '../types';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TabTwoScreen() {
+export default function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
   const [selectedStock, setSelectedStock] = useState('');
 
   const handleSelectItem = (symbol: string) => {
@@ -59,12 +60,11 @@ export default function TabTwoScreen() {
               setSelectedAsInputValue
               selectItem={handleSelectItem}
             />
+            <Button
+              onPress={() => navigation.navigate('Prediction', { symbol: selectedStock })}
+              title="Submit"
+            />
           </View>
-          <Button
-            onPress={() => {}}
-            title="Submit"
-
-          />
         </View>
       </View>
     </ScrollView>

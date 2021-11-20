@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginBottom: 10,
     marginTop: 10,
-
+    zIndex: 2,
+    elevation: 2,
   },
   border: {
     borderColor: '#666',

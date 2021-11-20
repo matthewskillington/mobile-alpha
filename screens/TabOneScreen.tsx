@@ -34,7 +34,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   useEffect(() => {
     const getStocks = async () => {
       //* TODO: Remove, temporarily add some data until feature fully implemented */
-      const jsonValue = JSON.stringify(['AAPL', 'IDEA.LON', 'AZN.LON', 'LSEG.LON', 'AUTO.LON']);
+      const jsonValue = JSON.stringify(['IDEA.LON', 'AUTO.LON']);
       await AsyncStorage.setItem(FAV_STOCKS, jsonValue);
 
       const result = await AsyncStorage.getItem(FAV_STOCKS);
