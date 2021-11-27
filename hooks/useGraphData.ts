@@ -67,7 +67,7 @@ const useGraphData = (symbol: string) => {
     try {
       const graphData = await AsyncStorage.getItem(`${symbol}Graph`);
       const graphJson = graphData != null ? JSON.parse(graphData) as GraphData : null;
-      const needsUpdate = graphJson?.timeSaved ? dataNeedsUpdate(graphJson.timeSaved) : true;
+      const needsUpdate = graphJson?.timeSaved ? dataNeedsUpdate(graphJson.timeSaved, true) : true;
 
       if (graphJson && !needsUpdate) {
         // We lose the colour & stroke options when stringifying the data to save so lets add them back here

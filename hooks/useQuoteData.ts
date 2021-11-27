@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { getPrices } from '../api/alphaVantage';
 import { dataNeedsUpdate } from '../helpers/helper';
 
-type StockData = {
+export type StockData = {
   symbol: string;
-  high: number;
-  low: number;
+  high: string;
+  low: string;
   price: number;
   changePercentage: string;
   name?: string;
