@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function PredictionScreen({ navigation, route }: RootStackScreenProps<'Prediction'>) {
+export default function PredictionScreen({ route }: RootStackScreenProps<'Prediction'>) {
   const { symbol } = route.params;
   return (
     <View style={styles.container}>
