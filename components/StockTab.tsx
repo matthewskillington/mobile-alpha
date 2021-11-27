@@ -6,7 +6,7 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import { useState } from 'react';
 import { useQuoteData } from '../hooks/useQuoteData';
 import { StockTabItem } from './StockItem';
-import { addItemToStorage, deleteItemFromStorage } from '../storage/AsyncStorage';
+import { deleteStockAsFavourite, saveStockAsFavourite } from '../storage/AsyncStorage';
 
 import { RootTabNavigation } from '../types';
 import { SearchComponent } from './SearchComponent';
@@ -49,12 +49,12 @@ const StockTab = ({ title, stocks: initialStocks, navigation }: StockTabProps) =
   const { data, fetchData: refetchData } = useQuoteData(stocks);
 
   const deleteItem = async (symbol: string) => {
-    const newStocks = await deleteItemFromStorage(symbol);
+    const newStocks = await deleteStockAsFavourite(symbol);
     setStocks(newStocks);
   };
 
   const addItem = async (symbol: string) => {
-    const newStocks = await addItemToStorage(symbol);
+    const newStocks = await saveStockAsFavourite(symbol);
     setStocks(newStocks);
   };
 
