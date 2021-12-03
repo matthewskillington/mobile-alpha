@@ -11,9 +11,10 @@ const roundPercentage = (value: string): string => {
 };
 
 // If we last updated the stock a long time ago return true
-const dataNeedsUpdate = (date: number) => {
+const dataNeedsUpdate = (date: number, isGraphData?: boolean) => {
   const timeDiff = Date.now() - date;
-  if (timeDiff > TenMinutes * 3) {
+  const timeThreshold = isGraphData ? TenMinutes * 144 : TenMinutes * 3;
+  if (timeDiff > timeThreshold) {
     return true;
   }
   return false;

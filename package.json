@@ -19,6 +19,7 @@
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
+    "@testing-library/react-hooks": "^7.0.2",
     "@types/jest": "^27.0.2",
     "@types/react-test-renderer": "^17.0.1",
     "eslint-config-airbnb-typescript": "^14.0.1",

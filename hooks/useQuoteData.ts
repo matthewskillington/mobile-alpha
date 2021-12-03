@@ -3,11 +3,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { getPrices } from '../api/alphaVantage';
 import { dataNeedsUpdate } from '../helpers/helper';
+import { saveJSON } from '../storage/AsyncStorage';
 
-type StockData = {
+export type StockData = {
   symbol: string;
-  high: number;
-  low: number;
+  high: string;
+  low: string;
   price: number;
   changePercentage: string;
   name?: string;
@@ -23,10 +24,7 @@ const CHANGEPERCENT = '10. change percent';
 
 const saveData = async (data: StockData[]) => {
   data.map(async (stock) => {
-    const stockToSave = stock;
-    stockToSave.timeSaved = Date.now();
-    const stringValue = JSON.stringify(stockToSave);
-    await AsyncStorage.setItem(`${stockToSave.symbol}Quote`, stringValue);
+    saveJSON(`${stock.symbol}Quote`, stock);
   });
 };
 

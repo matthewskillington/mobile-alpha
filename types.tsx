@@ -18,10 +18,15 @@ declare global {
   }
 }
 
+type Symbol = {
+  symbol: string
+};
+
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  Modal: { symbol: string, };
   NotFound: undefined;
+  Prediction: Symbol;
+  Modal: Symbol;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

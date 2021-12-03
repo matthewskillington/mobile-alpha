@@ -12,6 +12,7 @@ const renderComponent = (isEditing = false) => render(
     changePercentage={mockChangePercentage}
     isEditing={isEditing}
     deleteItem={mockDeleteItem}
+    onPress={() => {}}
   />,
 );
 
@@ -30,9 +31,9 @@ describe('StockItem', () => {
 
   it('should render price', () => {
     const { getByText } = renderComponent();
-    const price = getByText('300');
+    const price = getByText('$300');
     expect(price).toBeDefined();
-    expect(price.props.children).toBe(300);
+    expect(price.props.children).toBe('$300');
   });
 
   it('should render change percentage with correct formatting if positive', () => {

@@ -5,6 +5,7 @@ import { LineChart } from 'react-native-chart-kit';
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 
 import { Text, View } from '../components/Themed';
+import { roundPercentage } from '../helpers/helper';
 import { useGraphData } from '../hooks/useGraphData';
 import { ModalScreenRouteProps } from '../types';
 
@@ -54,6 +55,14 @@ const getChartConfig = (theme: 'light' | 'dark'): AbstractChartConfig => {
 
 const screenWidth = Dimensions.get('window').width;
 
+const getPercentageFromGraphData = (data: number[]): { percentageString: string, isPositiveChange: boolean } => {
+  const firstValue = data[0];
+  const lastValue = data[data.length - 1];
+  const percentageString = `${((lastValue / firstValue) * 100) - 100}%`;
+  const isPositiveChange = percentageString.substr(0, 1) !== '-';
+  return { percentageString, isPositiveChange };
+};
+
 export default function ModalScreen({ route }: ModalScreenRouteProps) {
   const theme = useColorScheme();
   const { symbol } = route.params;
@@ -61,11 +70,12 @@ export default function ModalScreen({ route }: ModalScreenRouteProps) {
   const { data } = useGraphData(stock);
 
   if (data && theme) {
+    const { percentageString, isPositiveChange } = getPercentageFromGraphData(data?.datasets[0].data);
     return (
       <View style={styles.container}>
         <View style={styles.titleWrapper}>
           <Text style={styles.title}>{symbol}</Text>
-          <Text style={[styles.title, { marginLeft: 'auto' }]}>{/* roundPercentage(data[0].changePercentage) */}</Text>
+          <Text style={[styles.title, { marginLeft: 'auto' }, isPositiveChange ? { color: '#39cc6d' } : { color: '#ff5252' }]}>{ roundPercentage(percentageString) }</Text>
         </View>
         <View style={styles.graphWrapper}>
           <LineChart

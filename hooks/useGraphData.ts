@@ -5,6 +5,7 @@ import { Dataset } from 'react-native-chart-kit/dist/HelperTypes';
 import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart';
 import { getPrices } from '../api/alphaVantage';
 import { dataNeedsUpdate, round } from '../helpers/helper';
+import { saveJSON } from '../storage/AsyncStorage';
 
 const TIME_SERIES_MONTHLY = 'Monthly Time Series';
 
@@ -25,7 +26,7 @@ enum TimeSpanOptions {
   'FiveYear' = 60,
 }
 
-type GraphData = LineChartData & {
+export type GraphData = LineChartData & {
   timeSaved?: number;
 };
 
@@ -53,10 +54,7 @@ const convertTimeSeriesDataToGraphData = (data: TimeSeriesData, option: TimeSpan
 };
 
 const saveData = async (data: GraphData, symbol: string) => {
-  const dataToSave = data;
-  dataToSave.timeSaved = Date.now();
-  const stringValue = JSON.stringify(dataToSave);
-  await AsyncStorage.setItem(`${symbol}Graph`, stringValue);
+  saveJSON(`${symbol}Graph`, data);
 };
 
 const useGraphData = (symbol: string) => {
@@ -67,7 +65,7 @@ const useGraphData = (symbol: string) => {
     try {
       const graphData = await AsyncStorage.getItem(`${symbol}Graph`);
       const graphJson = graphData != null ? JSON.parse(graphData) as GraphData : null;
-      const needsUpdate = graphJson?.timeSaved ? dataNeedsUpdate(graphJson.timeSaved) : true;
+      const needsUpdate = graphJson?.timeSaved ? dataNeedsUpdate(graphJson.timeSaved, true) : true;
 
       if (graphJson && !needsUpdate) {
         // We lose the colour & stroke options when stringifying the data to save so lets add them back here
