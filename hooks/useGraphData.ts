@@ -101,5 +101,6 @@ const useGraphData = (symbol: string) => {
 
   return { data };
 };
+console.log('hello');
 
 export { useGraphData };
