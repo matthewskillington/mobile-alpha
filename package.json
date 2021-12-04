@@ -11,7 +11,8 @@
     "lint": "eslint './*.{js,ts}' './components' './helpers' './hooks' './screens' './api' './storage' --ext '.js,.jsx,.ts,.tsx'"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupFiles": ["<rootDir>/__mocks__/setup.js"]
   },
   "dependencies": {
     "@expo/vector-icons": "^12.0.0",
