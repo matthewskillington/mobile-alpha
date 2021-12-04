@@ -63,7 +63,7 @@ const StockTabItem = ({
     <View style={styles.itemContent}>
       <Text style={[styles.itemText, styles.symbolText]}>{symbol}</Text>
       <View style={styles.itemPriceWrapper}>
-        <Text style={styles.itemText}>{`$${round(price)}`}</Text>
+        <Text style={styles.itemText}>{`${symbol.slice(-4) === '.LON' ? '£' : '$'}${round(price)}`}</Text>
         {getChangePercentageElement(changePercentage)}
       </View>
     </View>
