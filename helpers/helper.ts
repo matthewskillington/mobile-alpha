@@ -1,3 +1,5 @@
+import { CurrencySymbol } from '../types';
+
 const TenMinutes = 600000;
 
 const arrayRemove = (arr: any, value: any) => arr.filter((element: any) => element !== value);
@@ -10,6 +12,12 @@ const roundPercentage = (value: string): string => {
   return `${rounded}%`;
 };
 
+const getSymbolForCurrency = (currency: CurrencySymbol): string => (currency === 'USD' ? '$' : '£');
+
+const getCurrencySymbolFromStockSymbol = (stockSymbol: string) => (stockSymbol.slice(-4) === '.LON' ? '£' : '$');
+
+const getCurrencyFromStockSymbol = (stockSymbol: string) => (stockSymbol.slice(-4) === '.LON' ? 'GBP' : 'USD');
+
 // If we last updated the stock a long time ago return true
 const dataNeedsUpdate = (date: number, isGraphData?: boolean) => {
   const timeDiff = Date.now() - date;
@@ -21,5 +29,5 @@ const dataNeedsUpdate = (date: number, isGraphData?: boolean) => {
 };
 
 export {
-  arrayRemove, round, roundPercentage, dataNeedsUpdate,
+  arrayRemove, round, roundPercentage, getSymbolForCurrency, getCurrencySymbolFromStockSymbol, getCurrencyFromStockSymbol, dataNeedsUpdate,
 };

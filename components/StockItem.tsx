@@ -3,7 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { round, roundPercentage } from '../helpers/helper';
+import { getCurrencySymbolFromStockSymbol, round, roundPercentage } from '../helpers/helper';
 
 export type StockTabItemProps = {
   symbol: string,
@@ -63,7 +63,7 @@ const StockTabItem = ({
     <View style={styles.itemContent}>
       <Text style={[styles.itemText, styles.symbolText]}>{symbol}</Text>
       <View style={styles.itemPriceWrapper}>
-        <Text style={styles.itemText}>{`${symbol.slice(-4) === '.LON' ? '£' : '$'}${round(price)}`}</Text>
+        <Text style={styles.itemText}>{`${getCurrencySymbolFromStockSymbol(symbol)}${round(price)}`}</Text>
         {getChangePercentageElement(changePercentage)}
       </View>
     </View>

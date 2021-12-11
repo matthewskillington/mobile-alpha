@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react';
 import { Dataset } from 'react-native-chart-kit/dist/HelperTypes';
 import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart';
 import { getPrices } from '../api/alphaVantage';
-import { dataNeedsUpdate, round } from '../helpers/helper';
+import {
+  dataNeedsUpdate, round,
+} from '../helpers/helper';
 import { saveJSON } from '../storage/AsyncStorage';
 
 const TIME_SERIES_MONTHLY = 'Monthly Time Series';
@@ -36,10 +38,13 @@ const graphStroke = 4;
 const convertTimeSeriesDataToGraphData = (data: TimeSeriesData, option: TimeSpanOptions = TimeSpanOptions.SixMonth) => {
   const keys = Object.keys(data);
   const labels = keys.slice(0, option);
-  const result = labels.map((label) => ({
-    label: label.substr(5, 2),
-    averagePrice: round(parseFloat(data[label]['2. high']) + parseFloat(data[label]['3. low']) / 2),
-  }));
+  const result = labels.map((label) => {
+    const averagePrice = round((parseFloat(data[label]['2. high']) + parseFloat(data[label]['3. low'])) / 2);
+    return {
+      label: label.substr(5, 2),
+      averagePrice,
+    };
+  });
   const graphFormat = {
     labels: result.map((object) => object.label).reverse(),
     datasets: [
