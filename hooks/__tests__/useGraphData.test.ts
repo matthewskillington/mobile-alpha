@@ -192,6 +192,6 @@ describe('useGraphData', () => {
 
     const hookResult = result.current.data as GraphData;
     expect(hookResult.labels).toEqual(expect.arrayContaining(['06', '07', '08', '09', '10', '11']));
-    expect(hookResult.datasets[0].data).toEqual(expect.arrayContaining([224.36, 215.6, 213.31, 206.96, 208.31, 184.57]));
+    expect(hookResult.datasets[0].data).toEqual(expect.arrayContaining([147.94, 141.85, 140.95, 136.68, 135.31, 120.93]));
   });
 });

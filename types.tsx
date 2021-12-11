@@ -45,7 +45,7 @@ NativeStackScreenProps<RootStackParamList>
 >;
 
 export type RootTabNavigation = CompositeNavigationProp<BottomTabNavigationProp<RootTabParamList, 'TabOne'>, NativeStackNavigationProp<RootStackParamList, 'Root'>>;
-export type ModalScreenRouteProps = { route: RouteProp<RootStackParamList, 'Modal'> };
+export type GraphModalRouteProps = { route: RouteProp<RootStackParamList, 'Modal'> };
 
 export enum Months {
   Jan = '01',
@@ -61,3 +61,10 @@ export enum Months {
   Nov = '11',
   Dec = '12',
 }
+
+export type CurrencySymbol = 'USD' | 'GBP';
+
+export const Currency: Record<CurrencySymbol, CurrencySymbol> = {
+  USD: 'USD',
+  GBP: 'GBP',
+};

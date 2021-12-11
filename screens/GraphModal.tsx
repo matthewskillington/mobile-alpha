@@ -5,9 +5,9 @@ import { LineChart } from 'react-native-chart-kit';
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 
 import { Text, View } from '../components/Themed';
-import { roundPercentage } from '../helpers/helper';
+import { getCurrencySymbolFromStockSymbol, roundPercentage } from '../helpers/helper';
 import { useGraphData } from '../hooks/useGraphData';
-import { ModalScreenRouteProps } from '../types';
+import { GraphModalRouteProps } from '../types';
 
 const styles = StyleSheet.create({
   container: {
@@ -63,7 +63,7 @@ const getPercentageFromGraphData = (data: number[]): { percentageString: string,
   return { percentageString, isPositiveChange };
 };
 
-export default function ModalScreen({ route }: ModalScreenRouteProps) {
+export default function GraphModal({ route }: GraphModalRouteProps) {
   const theme = useColorScheme();
   const { symbol } = route.params;
   const [stock] = useState(symbol);
@@ -83,6 +83,7 @@ export default function ModalScreen({ route }: ModalScreenRouteProps) {
             width={screenWidth}
             height={700}
             chartConfig={getChartConfig(theme)}
+            yAxisLabel={getCurrencySymbolFromStockSymbol(symbol)}
             bezier
           />
         </View>

@@ -12,7 +12,7 @@ import { ColorSchemeName } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
+import GraphModal from '../screens/GraphModal';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import PredictionScreen from '../screens/PredictionScreen';
 import TabOneScreen from '../screens/TabOneScreen';
@@ -79,7 +79,7 @@ function RootNavigator() {
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="Prediction" component={PredictionScreen} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="Modal" component={GraphModal} />
       </Stack.Group>
     </Stack.Navigator>
   );
