@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getPrediction } from '../api/aws';
 
 const usePredictionData = (symbol: string) => {
-  const [data, setData] = useState();
+  const [data, setData] = useState<any>();
 
   const fetchData = async () => {
     try {
