@@ -75,22 +75,22 @@ export default function GraphModal({ route }: GraphModalRouteProps) {
     const { percentageString, isPositiveChange } = getPercentageFromGraphData(data?.datasets[0].data);
     return (
       <PerformanceTracker id={PerformanceTrackerScreenIds.StockGraph}>
-      <View style={styles.container}>
-        <View style={styles.titleWrapper}>
-          <Text style={styles.title}>{symbol}</Text>
-          <Text style={[styles.title, { marginLeft: 'auto' }, isPositiveChange ? { color: '#39cc6d' } : { color: '#ff5252' }]}>{ roundPercentage(percentageString) }</Text>
+        <View style={styles.container}>
+          <View style={styles.titleWrapper}>
+            <Text style={styles.title}>{symbol}</Text>
+            <Text style={[styles.title, { marginLeft: 'auto' }, isPositiveChange ? { color: '#39cc6d' } : { color: '#ff5252' }]}>{ roundPercentage(percentageString) }</Text>
+          </View>
+          <View style={styles.graphWrapper}>
+            <LineChart
+              data={data}
+              width={screenWidth}
+              height={700}
+              chartConfig={getChartConfig(theme)}
+              yAxisLabel={getCurrencySymbolFromStockSymbol(symbol)}
+              bezier
+            />
+          </View>
         </View>
-        <View style={styles.graphWrapper}>
-          <LineChart
-            data={data}
-            width={screenWidth}
-            height={700}
-            chartConfig={getChartConfig(theme)}
-            yAxisLabel={getCurrencySymbolFromStockSymbol(symbol)}
-            bezier
-          />
-        </View>
-      </View>
       </PerformanceTracker>
     );
   }

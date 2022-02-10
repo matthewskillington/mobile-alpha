@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
   },
   negative: {
     backgroundColor: '#ff5252',
-  }
-  
+  },
+
 });
 
 export default function PredictionScreen({ route }: RootStackScreenProps<'Prediction'>) {
@@ -57,7 +57,7 @@ export default function PredictionScreen({ route }: RootStackScreenProps<'Predic
   const [stock] = useState(symbol);
   const { data } = usePredictionData(stock);
 
-  if(data) {
+  if (data) {
     const recommendationHelper = getRecommendationHelper(data.recommendationMean);
     return (
       <PerformanceTracker id={PerformanceTrackerScreenIds.PredictionResult}>
@@ -71,7 +71,7 @@ export default function PredictionScreen({ route }: RootStackScreenProps<'Predic
             </View>
           </View>
           <View style={styles.bodyWrapper}>
-          <View style={styles.bodyItem}>
+            <View style={styles.bodyItem}>
               <Text style={styles.bodyHeader}>Earnings per share</Text>
               <Text>{data.fwEps}</Text>
             </View>

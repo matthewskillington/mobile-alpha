@@ -29,30 +29,29 @@ const dataNeedsUpdate = (date: number, isGraphData?: boolean) => {
 };
 
 const getRecommendationHelper = (score: number) => {
-  if(score <= 1){
-    return "Strong buy";
+  if (score <= 1) {
+    return 'Strong buy';
   }
-  else if (score <= 2){
-    return "Buy";
+  if (score <= 2) {
+    return 'Buy';
   }
-  else if (score <= 3){
-    return "Hold";
+  if (score <= 3) {
+    return 'Hold';
   }
-  else if (score <= 4){
-    return "Sell";
+  if (score <= 4) {
+    return 'Sell';
   }
-  else {
-    return "Strong sell";
-  }
-} 
+
+  return 'Strong sell';
+};
 
 export {
-  arrayRemove, 
-  round, 
-  roundPercentage, 
-  getSymbolForCurrency, 
-  getCurrencySymbolFromStockSymbol, 
-  getCurrencyFromStockSymbol, 
+  arrayRemove,
+  round,
+  roundPercentage,
+  getSymbolForCurrency,
+  getCurrencySymbolFromStockSymbol,
+  getCurrencyFromStockSymbol,
   dataNeedsUpdate,
   getRecommendationHelper,
 };
