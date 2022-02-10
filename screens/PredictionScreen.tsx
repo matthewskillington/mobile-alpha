@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 10,
   },
+  bodyWrapper: {
+  },
   symbolText: {
     fontSize: 36,
     fontWeight: '300',
@@ -25,6 +27,14 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     padding: 6,
     borderRadius: 4,
+  },
+  bodyHeader: {
+    marginBottom: 12,
+    fontWeight: '700',
+    fontSize: 18,
+  },
+  bodyItem: {
+    marginVertical: 10,
   },
   recommendationText: {
     fontSize: 24,
@@ -55,6 +65,16 @@ export default function PredictionScreen({ route }: RootStackScreenProps<'Predic
             <Text style={styles.recommendationText}>
               {`${data.recommendationMean} - ${recommendationHelper}`}
             </Text>
+          </View>
+        </View>
+        <View style={styles.bodyWrapper}>
+        <View style={styles.bodyItem}>
+            <Text style={styles.bodyHeader}>Earnings per share</Text>
+            <Text>{data.fwEps}</Text>
+          </View>
+          <View style={styles.bodyItem}>
+            <Text style={styles.bodyHeader}>Company Summary</Text>
+            <Text>{data.businessSummary}</Text>
           </View>
         </View>
       </View>

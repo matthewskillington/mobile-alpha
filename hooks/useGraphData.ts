@@ -35,7 +35,7 @@ export type GraphData = LineChartData & {
 const graphColor = (opacity = 1) => `rgba(134, 65, 244, ${opacity})`;
 const graphStroke = 4;
 
-const convertTimeSeriesDataToGraphData = (data: TimeSeriesData, option: TimeSpanOptions = TimeSpanOptions.SixMonth) => {
+const convertTimeSeriesDataToGraphData = (data: TimeSeriesData, option: TimeSpanOptions = TimeSpanOptions.OneYear) => {
   const keys = Object.keys(data);
   const labels = keys.slice(0, option);
   const result = labels.map((label) => {
