@@ -7,6 +7,8 @@ import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 import { Text, View } from '../components/Themed';
 import { getCurrencySymbolFromStockSymbol, roundPercentage } from '../helpers/helper';
 import { useGraphData } from '../hooks/useGraphData';
+import { PerformanceTracker } from '../performance/performance-tracker.component';
+import { PerformanceTrackerScreenIds } from '../performance/types';
 import { GraphModalRouteProps } from '../types';
 
 const styles = StyleSheet.create({
@@ -72,6 +74,7 @@ export default function GraphModal({ route }: GraphModalRouteProps) {
   if (data && theme) {
     const { percentageString, isPositiveChange } = getPercentageFromGraphData(data?.datasets[0].data);
     return (
+      <PerformanceTracker id={PerformanceTrackerScreenIds.StockGraph}>
       <View style={styles.container}>
         <View style={styles.titleWrapper}>
           <Text style={styles.title}>{symbol}</Text>
@@ -88,6 +91,7 @@ export default function GraphModal({ route }: GraphModalRouteProps) {
           />
         </View>
       </View>
+      </PerformanceTracker>
     );
   }
   return (

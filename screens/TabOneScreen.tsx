@@ -7,6 +7,8 @@ import { StockTab } from '../components/StockTab';
 
 import { View } from '../components/Themed';
 import { FAV_STOCKS } from '../constants/Values';
+import { PerformanceTracker } from '../performance/performance-tracker.component';
+import { PerformanceTrackerScreenIds } from '../performance/types';
 import { RootTabScreenProps } from '../types';
 
 const styles = StyleSheet.create({
@@ -46,18 +48,20 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   }, []);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        {stocks.length >= 1
-          ? (
-            <StockTab
-              title="Market data"
-              stocks={stocks}
-              navigation={navigation}
-            />
-          )
-          : <Text>Loading...</Text>}
-      </View>
-    </ScrollView>
+    <PerformanceTracker id={PerformanceTrackerScreenIds.Overview}>
+      <ScrollView>
+        <View style={styles.container}>
+          {stocks.length >= 1
+            ? (
+              <StockTab
+                title="Market data"
+                stocks={stocks}
+                navigation={navigation}
+              />
+            )
+            : <Text>Loading...</Text>}
+        </View>
+      </ScrollView>
+    </PerformanceTracker>
   );
 }

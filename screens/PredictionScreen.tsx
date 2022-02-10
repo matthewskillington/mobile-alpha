@@ -6,6 +6,8 @@ import {
 import { Text } from '../components/Themed';
 import { getRecommendationHelper } from '../helpers/helper';
 import { usePredictionData } from '../hooks/usePredictionData';
+import { PerformanceTracker } from '../performance/performance-tracker.component';
+import { PerformanceTrackerScreenIds } from '../performance/types';
 
 import { RootStackScreenProps } from '../types';
 
@@ -58,26 +60,28 @@ export default function PredictionScreen({ route }: RootStackScreenProps<'Predic
   if(data) {
     const recommendationHelper = getRecommendationHelper(data.recommendationMean);
     return (
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.symbolText}>{data.symbol}</Text>
-          <View style={[styles.recommendationWrapper, data.recommendationMean < 2.9 ? styles.positive : styles.negative]}>
-            <Text style={styles.recommendationText}>
-              {`${data.recommendationMean} - ${recommendationHelper}`}
-            </Text>
+      <PerformanceTracker id={PerformanceTrackerScreenIds.PredictionResult}>
+        <View style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.symbolText}>{data.symbol}</Text>
+            <View style={[styles.recommendationWrapper, data.recommendationMean < 2.9 ? styles.positive : styles.negative]}>
+              <Text style={styles.recommendationText}>
+                {`${data.recommendationMean} - ${recommendationHelper}`}
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.bodyWrapper}>
-        <View style={styles.bodyItem}>
-            <Text style={styles.bodyHeader}>Earnings per share</Text>
-            <Text>{data.fwEps}</Text>
-          </View>
+          <View style={styles.bodyWrapper}>
           <View style={styles.bodyItem}>
-            <Text style={styles.bodyHeader}>Company Summary</Text>
-            <Text>{data.businessSummary}</Text>
+              <Text style={styles.bodyHeader}>Earnings per share</Text>
+              <Text>{data.fwEps}</Text>
+            </View>
+            <View style={styles.bodyItem}>
+              <Text style={styles.bodyHeader}>Company Summary</Text>
+              <Text>{data.businessSummary}</Text>
+            </View>
           </View>
         </View>
-      </View>
+      </PerformanceTracker>
     );
   }
   return (
