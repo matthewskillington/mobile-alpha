@@ -23,19 +23,21 @@ const styles = StyleSheet.create({
   },
   titleWrapper: {
     flexDirection: 'row',
-    marginBottom: 20,
+    marginBottom: 30,
   },
   graphWrapper: {
     flex: 1,
     width: '100%',
+    marginRight: 20,
   },
   optionWrapper: {
     flexDirection: 'row',
-    paddingBottom: 20,
+    paddingBottom: 30,
   },
   timeOptions: {
     textAlign: 'center',
     flex: 1,
+    fontSize: 16,
   },
   selectedOption: {
     color: '#8641f4',
@@ -68,7 +70,7 @@ const getChartConfig = (theme: 'light' | 'dark'): AbstractChartConfig => {
   };
 };
 
-const screenWidth = Dimensions.get('window').width;
+const screenWidth = Dimensions.get('window').width - 20;
 
 const getPercentageFromGraphData = (data: number[]): { percentageString: string, isPositiveChange: boolean } => {
   const firstValue = data[0];
@@ -83,7 +85,7 @@ export default function GraphModal({ route }: GraphModalRouteProps) {
   const theme = useColorScheme();
   const { symbol } = route.params;
   const [stock] = useState(symbol);
-  const { data } = useGraphData(stock);
+  const { data } = useGraphData(stock, timeOption);
 
   if (data && theme) {
     const { percentageString, isPositiveChange } = getPercentageFromGraphData(data?.datasets[0].data);
