@@ -21,10 +21,11 @@ type TimeSeriesData = {
   }
 };
 
-enum TimeSpanOptions {
+export enum TimeSpanOptions {
   'ThreeMonth' = 3,
   'SixMonth' = 6,
   'OneYear' = 12,
+  'ThreeYear' = 36,
   'FiveYear' = 60,
 }
 
