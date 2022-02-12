@@ -1,5 +1,5 @@
 import React from 'react';
-import { PerformanceTrackerScreenIds } from './types';
+import { PerformanceTrackerScreenIds, PerformanceTrackingEnabled } from './types';
 
 type ScreenRenders = {
   name: PerformanceTrackerScreenIds;
@@ -60,12 +60,16 @@ const PerformanceProvider = (props: any) => {
 
   const { children } = props;
 
-  return (
-    <PerformanceContext.Provider
-      value={{ renderTimes: values, addScreenRender }}>
-      {children}
-    </PerformanceContext.Provider>
-  );
+  if (PerformanceTrackingEnabled) {
+    return (
+      <PerformanceContext.Provider
+        value={{ renderTimes: values, addScreenRender }}
+      >
+        {children}
+      </PerformanceContext.Provider>
+    );
+  }
+  return (<>{ children }</>);
 };
 
 export { PerformanceProvider, PerformanceContext };
