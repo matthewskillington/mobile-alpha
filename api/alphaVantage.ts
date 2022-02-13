@@ -12,7 +12,6 @@ const getPrices = async (symbol: string, option: TimeSeriesOption = 'TIME_SERIES
 };
 
 const getExchangeRate = async (from: CurrencySymbol, to: CurrencySymbol) => {
-  console.log(`${BASE_URL}/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${from}&to_currency=${to}&apikey=${ALPHA_VANTAGE_API_KEY}`);
   const response = await fetch(`${BASE_URL}/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${from}&to_currency=${to}&apikey=${ALPHA_VANTAGE_API_KEY}`);
   const data = await response.json();
   return data;

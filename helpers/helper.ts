@@ -21,6 +21,7 @@ const getCurrencyFromStockSymbol = (stockSymbol: string) => (stockSymbol.slice(-
 // If we last updated the stock a long time ago return true
 const dataNeedsUpdate = (date: number, isGraphData?: boolean) => {
   const timeDiff = Date.now() - date;
+  // Update graph after 24 hours and other data after 30 minutes
   const timeThreshold = isGraphData ? TenMinutes * 144 : TenMinutes * 3;
   if (timeDiff > timeThreshold) {
     return true;
@@ -28,6 +29,30 @@ const dataNeedsUpdate = (date: number, isGraphData?: boolean) => {
   return false;
 };
 
+const getRecommendationHelper = (score: number) => {
+  if (score <= 1) {
+    return 'Strong buy';
+  }
+  if (score <= 2) {
+    return 'Buy';
+  }
+  if (score <= 3) {
+    return 'Hold';
+  }
+  if (score <= 4) {
+    return 'Sell';
+  }
+
+  return 'Strong sell';
+};
+
 export {
-  arrayRemove, round, roundPercentage, getSymbolForCurrency, getCurrencySymbolFromStockSymbol, getCurrencyFromStockSymbol, dataNeedsUpdate,
+  arrayRemove,
+  round,
+  roundPercentage,
+  getSymbolForCurrency,
+  getCurrencySymbolFromStockSymbol,
+  getCurrencyFromStockSymbol,
+  dataNeedsUpdate,
+  getRecommendationHelper,
 };

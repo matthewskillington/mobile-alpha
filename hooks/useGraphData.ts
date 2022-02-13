@@ -21,10 +21,11 @@ type TimeSeriesData = {
   }
 };
 
-enum TimeSpanOptions {
+export enum TimeSpanOptions {
   'ThreeMonth' = 3,
   'SixMonth' = 6,
   'OneYear' = 12,
+  'ThreeYear' = 36,
   'FiveYear' = 60,
 }
 
@@ -35,7 +36,7 @@ export type GraphData = LineChartData & {
 const graphColor = (opacity = 1) => `rgba(134, 65, 244, ${opacity})`;
 const graphStroke = 4;
 
-const convertTimeSeriesDataToGraphData = (data: TimeSeriesData, option: TimeSpanOptions = TimeSpanOptions.SixMonth) => {
+const convertTimeSeriesDataToGraphData = (data: TimeSeriesData, option: TimeSpanOptions) => {
   const keys = Object.keys(data);
   const labels = keys.slice(0, option);
   const result = labels.map((label) => {
@@ -58,17 +59,17 @@ const convertTimeSeriesDataToGraphData = (data: TimeSeriesData, option: TimeSpan
   return graphFormat;
 };
 
-const saveData = async (data: GraphData, symbol: string) => {
-  saveJSON(`${symbol}Graph`, data);
+const saveData = async (data: GraphData, symbol: string, timeSpanOption: TimeSpanOptions) => {
+  saveJSON(`${symbol}-${timeSpanOption}Graph`, data);
 };
 
-const useGraphData = (symbol: string) => {
+const useGraphData = (symbol: string, timeSpanOption: TimeSpanOptions = TimeSpanOptions.OneYear) => {
   const [data, setData] = useState<GraphData | undefined>();
 
   const fetchData = async () => {
     // let's see if the data is already held locally and save us unneccessarily hitting the api
     try {
-      const graphData = await AsyncStorage.getItem(`${symbol}Graph`);
+      const graphData = await AsyncStorage.getItem(`${symbol}-${timeSpanOption}Graph`);
       const graphJson = graphData != null ? JSON.parse(graphData) as GraphData : null;
       const needsUpdate = graphJson?.timeSaved ? dataNeedsUpdate(graphJson.timeSaved, true) : true;
 
@@ -94,15 +95,15 @@ const useGraphData = (symbol: string) => {
       return;
     }
     const timeSeriesData = result[TIME_SERIES_MONTHLY];
-    const graphData = convertTimeSeriesDataToGraphData(timeSeriesData);
+    const graphData = convertTimeSeriesDataToGraphData(timeSeriesData, timeSpanOption);
     setData(graphData);
-    saveData(graphData, symbol);
+    saveData(graphData, symbol, timeSpanOption);
     console.log('📉fetched graph data');
   };
 
   useEffect(() => {
     fetchData();
-  }, [symbol]);
+  }, [symbol, timeSpanOption]);
 
   return { data };
 };
