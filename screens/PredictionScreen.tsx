@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { useState } from 'react';
 import {
+  ScrollView,
   StyleSheet, View,
 } from 'react-native';
+import { TechnicalIndicator, TechnicalIndicatorWarning } from '../components/TechnicalIndicator';
 import { Text } from '../components/Themed';
 import { getRecommendationHelper } from '../helpers/helper';
 import { usePredictionData } from '../hooks/usePredictionData';
@@ -52,6 +54,26 @@ const styles = StyleSheet.create({
 
 });
 
+const getEpsWarning = (eps: number): TechnicalIndicatorWarning => {
+  if (eps < 2) {
+    return 'negative';
+  }
+  if (eps < 10) {
+    return 'caution';
+  }
+  return 'positive';
+};
+
+const getEvToEbitdaWarning = (evToEbitda: number): TechnicalIndicatorWarning => {
+  if (evToEbitda > 1 && evToEbitda < 18) {
+    return 'positive';
+  }
+  if (evToEbitda >= 18) {
+    return 'caution';
+  }
+  return 'negative';
+};
+
 export default function PredictionScreen({ route }: RootStackScreenProps<'Prediction'>) {
   const { symbol } = route.params;
   const [stock] = useState(symbol);
@@ -61,7 +83,7 @@ export default function PredictionScreen({ route }: RootStackScreenProps<'Predic
     const recommendationHelper = getRecommendationHelper(data.recommendationMean);
     return (
       <PerformanceTracker id={PerformanceTrackerScreenIds.PredictionResult}>
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
           <View style={styles.titleContainer}>
             <Text style={styles.symbolText}>{data.symbol}</Text>
             <View style={[styles.recommendationWrapper, data.recommendationMean < 2.9 ? styles.positive : styles.negative]}>
@@ -71,16 +93,29 @@ export default function PredictionScreen({ route }: RootStackScreenProps<'Predic
             </View>
           </View>
           <View style={styles.bodyWrapper}>
-            <View style={styles.bodyItem}>
-              <Text style={styles.bodyHeader}>Earnings per share</Text>
-              <Text>{data.fwEps}</Text>
-            </View>
-            <View style={styles.bodyItem}>
-              <Text style={styles.bodyHeader}>Company Summary</Text>
-              <Text>{data.businessSummary}</Text>
-            </View>
+            <TechnicalIndicator
+              label="Earnings per share"
+              metricData={data.fwEps}
+              warning={getEpsWarning(data.fwEps)}
+              isNumber
+            />
+            <TechnicalIndicator
+              label="Enterprise value to EBITDA"
+              metricData={data.evToEbitda}
+              warning={getEvToEbitdaWarning(data.evToEbitda)}
+              isNumber
+            />
+            <TechnicalIndicator
+              label="Enterprise value to revenue"
+              metricData={data.evToRevenue}
+              isNumber
+            />
+            <TechnicalIndicator
+              label="Company Summary"
+              metricData={data.businessSummary}
+            />
           </View>
-        </View>
+        </ScrollView>
       </PerformanceTracker>
     );
   }

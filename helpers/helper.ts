@@ -21,6 +21,7 @@ const getCurrencyFromStockSymbol = (stockSymbol: string) => (stockSymbol.slice(-
 // If we last updated the stock a long time ago return true
 const dataNeedsUpdate = (date: number, isGraphData?: boolean) => {
   const timeDiff = Date.now() - date;
+  // Update graph after 24 hours and other data after 30 minutes
   const timeThreshold = isGraphData ? TenMinutes * 144 : TenMinutes * 3;
   if (timeDiff > timeThreshold) {
     return true;
