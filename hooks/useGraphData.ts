@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
-import { Dataset } from 'react-native-chart-kit/dist/HelperTypes';
 import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart';
 import { getPrices } from '../api/alphaVantage';
 import {
@@ -59,8 +58,8 @@ const convertTimeSeriesDataToGraphData = (data: TimeSeriesData, option: TimeSpan
   return graphFormat;
 };
 
-const saveData = async (data: GraphData, symbol: string, timeSpanOption: TimeSpanOptions) => {
-  saveJSON(`${symbol}-${timeSpanOption}Graph`, data);
+const saveData = async (data: GraphData, symbol: string) => {
+  saveJSON(`${symbol}-Graph`, data);
 };
 
 const useGraphData = (symbol: string, timeSpanOption: TimeSpanOptions = TimeSpanOptions.OneYear) => {
@@ -69,19 +68,13 @@ const useGraphData = (symbol: string, timeSpanOption: TimeSpanOptions = TimeSpan
   const fetchData = async () => {
     // let's see if the data is already held locally and save us unneccessarily hitting the api
     try {
-      const graphData = await AsyncStorage.getItem(`${symbol}-${timeSpanOption}Graph`);
-      const graphJson = graphData != null ? JSON.parse(graphData) as GraphData : null;
-      const needsUpdate = graphJson?.timeSaved ? dataNeedsUpdate(graphJson.timeSaved, true) : true;
+      const timeSeriesData = await AsyncStorage.getItem(`${symbol}-Graph`);
+      const timesSeriesJSON = timeSeriesData != null ? JSON.parse(timeSeriesData) : null;
+      const needsUpdate = timesSeriesJSON?.timeSaved ? dataNeedsUpdate(timesSeriesJSON.timeSaved, true) : true;
 
-      if (graphJson && !needsUpdate) {
-        // We lose the colour & stroke options when stringifying the data to save so lets add them back here
-        const graphDataWithColours = graphJson;
-        graphDataWithColours.datasets = graphJson.datasets.map((dataSet: Dataset) => ({
-          data: dataSet.data,
-          color: graphColor,
-          strokeWidth: graphStroke,
-        }));
-        setData(graphJson);
+      if (timesSeriesJSON && !needsUpdate) {
+        const graphData = convertTimeSeriesDataToGraphData(timesSeriesJSON, timeSpanOption);
+        setData(graphData);
         console.log(`💾 Found graph data in local storage ${symbol}`);
         return;
       }
@@ -95,9 +88,9 @@ const useGraphData = (symbol: string, timeSpanOption: TimeSpanOptions = TimeSpan
       return;
     }
     const timeSeriesData = result[TIME_SERIES_MONTHLY];
+    saveData(timeSeriesData, symbol);
     const graphData = convertTimeSeriesDataToGraphData(timeSeriesData, timeSpanOption);
     setData(graphData);
-    saveData(graphData, symbol, timeSpanOption);
     console.log('📉fetched graph data');
   };
 
