@@ -3,8 +3,9 @@ import {
   Button, StyleSheet, Text,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
+import { useState } from 'react';
 import { CustomInput } from '../components/CustomInput';
 
 import { View } from '../components/Themed';
@@ -34,6 +35,14 @@ const styles = StyleSheet.create({
   errorText: {
     color: '#fff',
   },
+  signInWrapper: {
+    alignItems: 'center',
+    marginVertical: 50,
+  },
+  signInText: {
+    marginTop: 10,
+    color: '#297d96',
+  },
 });
 
 initializeApp(firebaseConfig);
@@ -41,34 +50,48 @@ initializeApp(firebaseConfig);
 const auth = getAuth();
 
 export default function LoginScreen({ navigation }: RootTabScreenProps<'TabThree'>) {
-  const [signUpValues, setSignUpValues] = React.useState({
+  const [signInState, setSignInState] = useState<'SignIn' | 'SignUp'>('SignUp');
+  const [values, setValues] = useState({
     email: '',
     password: '',
     error: '',
   });
 
-  async function signUp() {
-    if (signUpValues.email === '' || signUpValues.password === '') {
-      setSignUpValues({
-        ...signUpValues,
+  async function submitHandler() {
+    if (values.email === '' || values.password === '') {
+      setValues({
+        ...values,
         error: 'Email and password are mandatory.',
       });
       return;
     }
-
-    setSignUpValues({
-      ...signUpValues,
+    setValues({
+      ...values,
       error: '',
     });
-    try {
-      await createUserWithEmailAndPassword(auth, signUpValues.email, signUpValues.password);
-      console.log('User created');
-    } catch (error: any) {
-      setSignUpValues({
-        ...signUpValues,
-        error: error.message,
-      });
-      console.log('Error creating user: ', error);
+    if (signInState === 'SignUp') {
+      try {
+        await createUserWithEmailAndPassword(auth, values.email, values.password);
+        console.log('User created');
+      } catch (error: any) {
+        setValues({
+          ...values,
+          error: error.message,
+        });
+        console.log('Error creating user: ', error);
+      }
+    } else {
+      try {
+        const signInResult = await signInWithEmailAndPassword(auth, values.email, values.password);
+
+        // TODO: Send this information to a user context
+        console.log('User signed in', JSON.stringify(signInResult));
+      } catch (error: any) {
+        setValues({
+          ...values,
+          error: error.message,
+        });
+      }
     }
   }
 
@@ -76,25 +99,46 @@ export default function LoginScreen({ navigation }: RootTabScreenProps<'TabThree
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.signUpWrapper}>
-          <Text style={styles.signUpHeading}>Sign Up</Text>
+
+          <Text style={styles.signUpHeading}>{signInState === 'SignUp' ? 'Sign Up' : 'Sign In'}</Text>
           <CustomInput
             label="Email"
             placeholder="something@somewhere.com"
-            value={signUpValues.email}
-            setValue={(text: string) => setSignUpValues({ ...signUpValues, email: text })}
+            value={values.email}
+            setValue={(text: string) => setValues({ ...values, email: text })}
           />
           <CustomInput
             label="Password"
             placeholder="password"
-            value={signUpValues.password}
-            setValue={(text: string) => setSignUpValues({ ...signUpValues, password: text })}
+            value={values.password}
+            setValue={(text: string) => setValues({ ...values, password: text })}
+            secureTextEntry
           />
 
-          {!!signUpValues.error && <View style={styles.error}><Text style={styles.errorText}>{signUpValues.error}</Text></View>}
+          {!!values.error && <View style={styles.error}><Text style={styles.errorText}>{values.error}</Text></View>}
           <Button
-            onPress={() => signUp()}
+            onPress={() => submitHandler()}
             title="Submit"
           />
+          <View style={styles.signInWrapper}>
+            <Text>{signInState === 'SignUp' ? 'Already have an account?' : 'Not got an account?'}</Text>
+            {signInState === 'SignUp' ? (
+              <Text
+                style={styles.signInText}
+                onPress={() => setSignInState('SignIn')}
+              >
+                Sign in
+              </Text>
+            ) : (
+              <Text
+                style={styles.signInText}
+                onPress={() => setSignInState('SignUp')}
+              >
+                Sign up
+              </Text>
+            )}
+
+          </View>
         </View>
       </View>
     </ScrollView>

@@ -8,6 +8,7 @@ export type CustomInputProps = {
   placeholder?: string,
   value: string,
   setValue: (text: any) => void,
+  secureTextEntry?: boolean,
 };
 
 const styles = StyleSheet.create({
@@ -29,6 +30,7 @@ const CustomInput = ({
   placeholder,
   value,
   setValue,
+  secureTextEntry = false,
 }: CustomInputProps) => (
   <View style={styles.inputWrapper}>
     <Text style={styles.label}>{label}</Text>
@@ -37,6 +39,7 @@ const CustomInput = ({
       placeholder={placeholder}
       value={value}
       onChangeText={(text: string) => setValue(text)}
+      secureTextEntry={secureTextEntry}
     />
   </View>
 
