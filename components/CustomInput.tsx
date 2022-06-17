@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import {
   Text, StyleSheet, View, TextInput,
 } from 'react-native';
@@ -7,15 +7,17 @@ export type CustomInputProps = {
   label: string,
   placeholder?: string,
   value: string,
-  setValue: Dispatch<React.SetStateAction<string>>
+  setValue: (text: any) => void,
+  secureTextEntry?: boolean,
 };
 
 const styles = StyleSheet.create({
   inputWrapper: {
-    marginVertical: 20,
+    marginVertical: 10,
   },
   label: {
     fontSize: 20,
+    fontWeight: '300',
   },
   textInput: {
     marginVertical: 10,
@@ -28,6 +30,7 @@ const CustomInput = ({
   placeholder,
   value,
   setValue,
+  secureTextEntry = false,
 }: CustomInputProps) => (
   <View style={styles.inputWrapper}>
     <Text style={styles.label}>{label}</Text>
@@ -36,6 +39,7 @@ const CustomInput = ({
       placeholder={placeholder}
       value={value}
       onChangeText={(text: string) => setValue(text)}
+      secureTextEntry={secureTextEntry}
     />
   </View>
 
