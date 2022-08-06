@@ -3,7 +3,9 @@ import {
   Button, StyleSheet, Text,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { useState } from 'react';
 import { CustomInput } from '../components/CustomInput';
@@ -11,6 +13,7 @@ import { CustomInput } from '../components/CustomInput';
 import { View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { firebaseConfig } from '../config/firebase';
+import useUser from '../hooks/useUser';
 
 const styles = StyleSheet.create({
   container: {
@@ -50,6 +53,7 @@ initializeApp(firebaseConfig);
 const auth = getAuth();
 
 export default function LoginScreen({ navigation }: RootTabScreenProps<'TabThree'>) {
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState<Boolean>(false);
   const [signInState, setSignInState] = useState<'SignIn' | 'SignUp'>('SignUp');
   const [values, setValues] = useState({
     email: '',
@@ -57,10 +61,18 @@ export default function LoginScreen({ navigation }: RootTabScreenProps<'TabThree
     error: '',
   });
 
+  const { user, setUser } = useUser();
+
+  const signOut = () => {
+    setIsUserAuthenticated(false);
+    setUser(undefined);
+  };
+
   async function submitHandler() {
     if (values.email === '' || values.password === '') {
       setValues({
-        ...values,
+        email: '',
+        password: '',
         error: 'Email and password are mandatory.',
       });
       return;
@@ -71,11 +83,13 @@ export default function LoginScreen({ navigation }: RootTabScreenProps<'TabThree
     });
     if (signInState === 'SignUp') {
       try {
-        await createUserWithEmailAndPassword(auth, values.email, values.password);
-        console.log('User created');
+        const createResult = await createUserWithEmailAndPassword(auth, values.email, values.password);
+        setIsUserAuthenticated(true);
+        setUser(createResult);
       } catch (error: any) {
         setValues({
-          ...values,
+          email: '',
+          password: '',
           error: error.message,
         });
         console.log('Error creating user: ', error);
@@ -83,12 +97,16 @@ export default function LoginScreen({ navigation }: RootTabScreenProps<'TabThree
     } else {
       try {
         const signInResult = await signInWithEmailAndPassword(auth, values.email, values.password);
-
-        // TODO: Send this information to a user context
-        console.log('User signed in', JSON.stringify(signInResult));
+        if (signInResult.user.refreshToken) {
+          setIsUserAuthenticated(true);
+          setUser(signInResult);
+          return;
+        }
+        throw new Error('No refresh token');
       } catch (error: any) {
         setValues({
-          ...values,
+          email: '',
+          password: '',
           error: error.message,
         });
       }
@@ -98,48 +116,66 @@ export default function LoginScreen({ navigation }: RootTabScreenProps<'TabThree
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.signUpWrapper}>
-
-          <Text style={styles.signUpHeading}>{signInState === 'SignUp' ? 'Sign Up' : 'Sign In'}</Text>
-          <CustomInput
-            label="Email"
-            placeholder="something@somewhere.com"
-            value={values.email}
-            setValue={(text: string) => setValues({ ...values, email: text })}
-          />
-          <CustomInput
-            label="Password"
-            placeholder="password"
-            value={values.password}
-            setValue={(text: string) => setValues({ ...values, password: text })}
-            secureTextEntry
-          />
-
-          {!!values.error && <View style={styles.error}><Text style={styles.errorText}>{values.error}</Text></View>}
-          <Button
-            onPress={() => submitHandler()}
-            title="Submit"
-          />
-          <View style={styles.signInWrapper}>
-            <Text>{signInState === 'SignUp' ? 'Already have an account?' : 'Not got an account?'}</Text>
-            {signInState === 'SignUp' ? (
-              <Text
-                style={styles.signInText}
-                onPress={() => setSignInState('SignIn')}
-              >
-                Sign in
+        {isUserAuthenticated
+          ? (
+            <View>
+              <Text style={styles.signUpHeading}>
+                Hello
+                {' '}
+                {user?.user.email}
+                !
               </Text>
-            ) : (
-              <Text
-                style={styles.signInText}
-                onPress={() => setSignInState('SignUp')}
-              >
-                Sign up
-              </Text>
-            )}
+              <Button
+                onPress={() => signOut()}
+                title="Sign out"
+              />
+            </View>
+          )
+          : (
+            <View style={styles.signUpWrapper}>
 
-          </View>
-        </View>
+              <Text style={styles.signUpHeading}>{signInState === 'SignUp' ? 'Sign Up' : 'Sign In'}</Text>
+              <CustomInput
+                label="Email"
+                placeholder="something@somewhere.com"
+                value={values.email}
+                setValue={(text: string) => setValues({ ...values, email: text })}
+              />
+              <CustomInput
+                label="Password"
+                placeholder="password"
+                value={values.password}
+                setValue={(text: string) => setValues({ ...values, password: text })}
+                secureTextEntry
+              />
+
+              {!!values.error && <View style={styles.error}><Text style={styles.errorText}>{values.error}</Text></View>}
+              <Button
+                onPress={() => submitHandler()}
+                title="Submit"
+              />
+              <View style={styles.signInWrapper}>
+                <Text>{signInState === 'SignUp' ? 'Already have an account?' : 'Not got an account?'}</Text>
+                {signInState === 'SignUp' ? (
+                  <Text
+                    style={styles.signInText}
+                    onPress={() => setSignInState('SignIn')}
+                  >
+                    Sign in
+                  </Text>
+                ) : (
+                  <Text
+                    style={styles.signInText}
+                    onPress={() => setSignInState('SignUp')}
+                  >
+                    Sign up
+                  </Text>
+                )}
+
+              </View>
+            </View>
+          )}
+
       </View>
     </ScrollView>
   );
