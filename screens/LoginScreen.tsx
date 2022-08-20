@@ -11,7 +11,6 @@ import { useState } from 'react';
 import { CustomInput } from '../components/CustomInput';
 
 import { View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
 import { firebaseConfig } from '../config/firebase';
 import useUser from '../hooks/useUser';
 
@@ -52,7 +51,7 @@ initializeApp(firebaseConfig);
 
 const auth = getAuth();
 
-export default function LoginScreen({ navigation }: RootTabScreenProps<'TabThree'>) {
+export default function LoginScreen() {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState<Boolean>(false);
   const [signInState, setSignInState] = useState<'SignIn' | 'SignUp'>('SignUp');
   const [values, setValues] = useState({
