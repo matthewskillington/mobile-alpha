@@ -13,6 +13,7 @@ import { ColorSchemeName } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import GraphModal from '../screens/GraphModal';
+import LoginScreen from '../screens/LoginScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import PredictionScreen from '../screens/PredictionScreen';
 import TabOneScreen from '../screens/TabOneScreen';
@@ -60,6 +61,14 @@ function BottomTabNavigator() {
         options={{
           title: 'Predictions',
           tabBarIcon: ({ color }) => <TabBarIcon name="bar-chart" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="TabThree"
+        component={LoginScreen}
+        options={{
+          title: 'Login',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </BottomTab.Navigator>
