@@ -12,6 +12,7 @@ import { ColorSchemeName } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import useUser from '../hooks/useUser';
 import GraphModal from '../screens/GraphModal';
 import LoginScreen from '../screens/LoginScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -39,6 +40,7 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  const { user } = useUser();
 
   return (
     <BottomTab.Navigator
@@ -67,7 +69,7 @@ function BottomTabNavigator() {
         name="TabThree"
         component={LoginScreen}
         options={{
-          title: 'Login',
+          title: user ? 'My account' : 'Login',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
