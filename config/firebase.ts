@@ -4,7 +4,7 @@ import { FIREBASE_API_KEY, FIREBASE_APP_ID, FIREBASE_MESSAGING_ID } from '@env';
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
   authDomain: 'mobile-alpha-bc6c3.firebaseapp.com',
-  // databaseURL: 'https://project-id.firebaseio.com',
+  databaseURL: 'https://mobile-alpha-bc6c3-default-rtdb.firebaseio.com/',
   projectId: 'mobile-alpha-bc6c3',
   storageBucket: 'mobile-alpha-bc6c3.appspot.com',
   messagingSenderId: FIREBASE_MESSAGING_ID,
