@@ -4,12 +4,13 @@ import {
 } from 'react-native';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useState } from 'react';
-import { useQuoteData } from '../hooks/useQuoteData';
-import { StockTabItem } from './StockItem';
-import { deleteStockAsFavourite, saveStockAsFavourite } from '../storage/AsyncStorage';
+import { useQuoteData } from '../../hooks/useQuoteData';
+import { StockTabItem } from '../StockItem';
 
-import { RootTabNavigation } from '../types';
-import { SearchComponent } from './SearchComponent';
+import { RootTabNavigation } from '../../types';
+import { SearchComponent } from '../SearchComponent';
+import useUser from '../../hooks/useUser';
+import { deleteStock, saveStock } from './update-stocks';
 
 export type StockTabProps = {
   title: string,
@@ -45,16 +46,17 @@ const styles = StyleSheet.create({
 const StockTab = ({ title, stocks: initialStocks, navigation }: StockTabProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [stocks, setStocks] = useState(initialStocks);
+  const { user } = useUser();
 
   const { data, fetchData: refetchData } = useQuoteData(stocks);
 
   const deleteItem = async (symbol: string) => {
-    const newStocks = await deleteStockAsFavourite(symbol);
+    const newStocks = await deleteStock(user, symbol);
     setStocks(newStocks);
   };
 
   const addItem = async (symbol: string) => {
-    const newStocks = await saveStockAsFavourite(symbol);
+    const newStocks = await saveStock(user, symbol);
     setStocks(newStocks);
   };
 

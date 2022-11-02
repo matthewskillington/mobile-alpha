@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StockTab } from '../components/StockTab';
+import { StockTab } from '../components/StockTab/StockTab';
 
 import { View } from '../components/Themed';
 import { FAV_STOCKS } from '../constants/Values';

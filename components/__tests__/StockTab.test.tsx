@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, waitFor } from 'react-native-testing-library';
 import _ from 'lodash';
-import { StockTab } from '../StockTab';
+import { StockTab } from '../StockTab/StockTab';
 
 const mockStockData: any[] = [];
 const mockFetch = jest.fn();
