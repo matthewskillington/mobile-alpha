@@ -6,12 +6,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
 import { useState } from 'react';
 import { CustomInput } from '../components/CustomInput';
 
 import { View } from '../components/Themed';
-import { firebaseConfig } from '../config/firebase';
 import useUser from '../hooks/useUser';
 
 const styles = StyleSheet.create({
@@ -47,11 +45,8 @@ const styles = StyleSheet.create({
   },
 });
 
-initializeApp(firebaseConfig);
-
-const auth = getAuth();
-
 export default function LoginScreen() {
+  const auth = getAuth();
   const [isUserAuthenticated, setIsUserAuthenticated] = useState<Boolean>(false);
   const [signInState, setSignInState] = useState<'SignIn' | 'SignUp'>('SignUp');
   const [values, setValues] = useState({
