@@ -62,6 +62,39 @@ export default function LoginScreen() {
     setUser(undefined);
   };
 
+  const createUser = async () => {
+    try {
+      const createResult = await createUserWithEmailAndPassword(auth, values.email, values.password);
+      setIsUserAuthenticated(true);
+      setUser(createResult);
+    } catch (error: any) {
+      setValues({
+        email: '',
+        password: '',
+        error: error.message,
+      });
+      console.log('Error creating user: ', error);
+    }
+  };
+
+  const signIn = async () => {
+    try {
+      const signInResult = await signInWithEmailAndPassword(auth, values.email, values.password);
+      if (signInResult.user.refreshToken) {
+        setIsUserAuthenticated(true);
+        setUser(signInResult);
+        return;
+      }
+      throw new Error('No refresh token');
+    } catch (error: any) {
+      setValues({
+        email: '',
+        password: '',
+        error: error.message,
+      });
+    }
+  };
+
   async function submitHandler() {
     if (values.email === '' || values.password === '') {
       setValues({
@@ -76,34 +109,9 @@ export default function LoginScreen() {
       error: '',
     });
     if (signInState === 'SignUp') {
-      try {
-        const createResult = await createUserWithEmailAndPassword(auth, values.email, values.password);
-        setIsUserAuthenticated(true);
-        setUser(createResult);
-      } catch (error: any) {
-        setValues({
-          email: '',
-          password: '',
-          error: error.message,
-        });
-        console.log('Error creating user: ', error);
-      }
+      createUser();
     } else {
-      try {
-        const signInResult = await signInWithEmailAndPassword(auth, values.email, values.password);
-        if (signInResult.user.refreshToken) {
-          setIsUserAuthenticated(true);
-          setUser(signInResult);
-          return;
-        }
-        throw new Error('No refresh token');
-      } catch (error: any) {
-        setValues({
-          email: '',
-          password: '',
-          error: error.message,
-        });
-      }
+      signIn();
     }
   }
 
