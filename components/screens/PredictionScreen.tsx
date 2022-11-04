@@ -4,14 +4,14 @@ import {
   ScrollView,
   StyleSheet, View,
 } from 'react-native';
-import { TechnicalIndicator, TechnicalIndicatorWarning } from '../components/TechnicalIndicator';
-import { Text } from '../components/Themed';
-import { getRecommendationHelper } from '../helpers/helper';
-import { usePredictionData } from '../hooks/usePredictionData';
-import { PerformanceTracker } from '../performance/performance-tracker.component';
-import { PerformanceTrackerScreenIds } from '../performance/types';
+import { TechnicalIndicator, TechnicalIndicatorWarning } from '../TechnicalIndicator';
+import { Text } from '../Themed';
+import { getRecommendationHelper } from '../../helpers/helper';
+import { usePredictionData } from '../../hooks/usePredictionData';
+import { PerformanceTracker } from '../../performance/performance-tracker.component';
+import { PerformanceTrackerScreenIds } from '../../performance/types';
 
-import { RootStackScreenProps } from '../types';
+import { RootStackScreenProps } from '../../types';
 
 const styles = StyleSheet.create({
   container: {

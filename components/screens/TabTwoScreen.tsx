@@ -3,12 +3,12 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Button, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { SearchComponent } from '../components/SearchComponent';
+import { SearchComponent } from '../SearchComponent';
 
-import { Text, View } from '../components/Themed';
-import { PerformanceTracker } from '../performance/performance-tracker.component';
-import { PerformanceTrackerScreenIds } from '../performance/types';
-import { RootTabScreenProps } from '../types';
+import { Text, View } from '../Themed';
+import { PerformanceTracker } from '../../performance/performance-tracker.component';
+import { PerformanceTrackerScreenIds } from '../../performance/types';
+import { RootTabScreenProps } from '../../types';
 
 const styles = StyleSheet.create({
   container: {

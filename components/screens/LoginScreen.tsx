@@ -7,10 +7,10 @@ import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { useState } from 'react';
-import { CustomInput } from '../components/CustomInput';
+import { CustomInput } from '../CustomInput';
 
-import { View } from '../components/Themed';
-import useUser from '../hooks/useUser';
+import { View } from '../Themed';
+import useUser from '../../hooks/useUser';
 
 const styles = StyleSheet.create({
   container: {

@@ -3,13 +3,15 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StockTab } from '../components/StockTab/StockTab';
+import { StockTab } from '../StockTab/StockTab';
 
-import { View } from '../components/Themed';
-import { FAV_STOCKS } from '../constants/Values';
-import { PerformanceTracker } from '../performance/performance-tracker.component';
-import { PerformanceTrackerScreenIds } from '../performance/types';
-import { RootTabScreenProps } from '../types';
+import { View } from '../Themed';
+import { FAV_STOCKS } from '../../constants/Values';
+import { PerformanceTracker } from '../../performance/performance-tracker.component';
+import { PerformanceTrackerScreenIds } from '../../performance/types';
+import { RootTabScreenProps } from '../../types';
+import useUser from '../../hooks/useUser';
+import { getFavStocksForUser } from '../../helpers/firebase-db-helper';
 
 const styles = StyleSheet.create({
   container: {
@@ -32,16 +34,23 @@ const styles = StyleSheet.create({
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [stocks, setStocks] = useState([]);
+  const { user } = useUser();
 
   useEffect(() => {
     const getStocks = async () => {
-      //* TODO: Remove, temporarily add some data until feature fully implemented */
-      const jsonValue = JSON.stringify(['KCT.LON', 'AUTO.LON']);
-      await AsyncStorage.setItem(FAV_STOCKS, jsonValue);
+      let combinedStocks = [];
+      // Get data from firebase db if user logged in
+      if (user) {
+        const stocksFromFirebase = await getFavStocksForUser(user.user.uid);
+        console.log(stocksFromFirebase);
+        // combinedStocks.push(stocksFromFirebase);
+      }
 
       const result = await AsyncStorage.getItem(FAV_STOCKS);
-      const jsonResult = result ? JSON.parse(result) : [];
-      setStocks(jsonResult);
+      if (result) {
+        combinedStocks = JSON.parse(result);
+      }
+      setStocks(combinedStocks);
     };
 
     getStocks();
