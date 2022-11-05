@@ -40,6 +40,11 @@ export function Text(props: TextProps) {
   return <DefaultText style={[{ color }, style]} {...otherProps} />;
 }
 
+Text.defaultProps = {
+  lightColor: undefined,
+  darkColor: undefined,
+};
+
 export function View(props: ViewProps) {
   const {
     style, lightColor, darkColor, ...otherProps
@@ -49,3 +54,8 @@ export function View(props: ViewProps) {
   // eslint-disable-next-line react/jsx-props-no-spreading
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
+
+View.defaultProps = {
+  lightColor: undefined,
+  darkColor: undefined,
+};
