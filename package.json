@@ -14,6 +14,9 @@
     "preset": "jest-expo",
     "setupFiles": [
       "<rootDir>/__mocks__/setup.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(.*expo.*|.*react.*)/)"
     ]
   },
   "dependencies": {
