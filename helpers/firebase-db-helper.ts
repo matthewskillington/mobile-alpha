@@ -1,4 +1,7 @@
-import { getDatabase, ref, set } from 'firebase/database';
+import {
+  child,
+  get, getDatabase, ref, set,
+} from 'firebase/database';
 
 const setFavStocksForUser = (userId: string, stocks: Array<string>) => {
   const db = getDatabase();
@@ -8,4 +11,10 @@ const setFavStocksForUser = (userId: string, stocks: Array<string>) => {
   console.log(`saved ${stocks.toString()} for ${userId}`);
 };
 
-export { setFavStocksForUser };
+const getFavStocksForUser = async (userId: string): Promise<Array<string>> => {
+  const dbRef = ref(getDatabase());
+  const result = await get(child(dbRef, `users/${userId}`));
+  return result.val().favStocks as string[];
+};
+
+export { setFavStocksForUser, getFavStocksForUser };
