@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import { AntDesign, Feather } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuoteData } from '../../hooks/useQuoteData';
 import { StockTabItem } from '../StockItem';
 
@@ -11,10 +11,10 @@ import { RootTabNavigation } from '../../types';
 import { SearchComponent } from '../SearchComponent';
 import useUser from '../../hooks/useUser';
 import { deleteStock, saveStock } from './update-stocks';
+import { getFavourites } from '../../storage/AsyncStorage';
 
 export type StockTabProps = {
   title: string,
-  stocks: string[] // array of stock symbols
   navigation: RootTabNavigation;
 };
 
@@ -43,12 +43,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const StockTab = ({ title, stocks: initialStocks, navigation }: StockTabProps) => {
+const StockTab = ({ title, navigation }: StockTabProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [stocks, setStocks] = useState(initialStocks);
+  const [stocks, setStocks] = useState<Array<string>>([]);
   const { user } = useUser();
 
   const { data, fetchData: refetchData } = useQuoteData(stocks);
+
+  useEffect(() => {
+    const getStocks = async () => {
+      const newStocks = await getFavourites();
+      setStocks(newStocks);
+    };
+    getStocks();
+  }, []);
 
   const deleteItem = async (symbol: string) => {
     const newStocks = await deleteStock(user, symbol);

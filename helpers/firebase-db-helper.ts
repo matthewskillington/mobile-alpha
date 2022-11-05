@@ -1,4 +1,5 @@
 import {
+  child,
   get, getDatabase, ref, set,
 } from 'firebase/database';
 
@@ -11,8 +12,8 @@ const setFavStocksForUser = (userId: string, stocks: Array<string>) => {
 };
 
 const getFavStocksForUser = async (userId: string) => {
-  const db = getDatabase();
-  const result = await get(ref(db, `users/${userId}`));
+  const dbRef = ref(getDatabase());
+  const result = await get(child(dbRef, `users/${userId}`));
   return result;
 };
 
