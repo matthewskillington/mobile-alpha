@@ -11,7 +11,7 @@ jobs:
   test: 
       executor:
           name: node/default
-          tag: '14.20'
+          tag: '16.16'
       steps:
         - checkout
         - node/install-packages:
@@ -22,7 +22,7 @@ jobs:
   lint: 
       executor:
           name: node/default
-          tag: '14.20'
+          tag: '16.16'
       steps:
         - checkout
         - node/install-packages:
