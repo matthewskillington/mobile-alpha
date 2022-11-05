@@ -10,8 +10,7 @@ import { StockTabItem } from '../StockItem';
 import { RootTabNavigation } from '../../types';
 import { SearchComponent } from '../SearchComponent';
 import useUser from '../../hooks/useUser';
-import { deleteStock, saveStock } from './update-stocks';
-import { getFavourites } from '../../storage/AsyncStorage';
+import { deleteStock, getFavouriteStocks, saveStock } from './update-stocks';
 
 export type StockTabProps = {
   title: string,
@@ -52,11 +51,11 @@ const StockTab = ({ title, navigation }: StockTabProps) => {
 
   useEffect(() => {
     const getStocks = async () => {
-      const newStocks = await getFavourites();
+      const newStocks = await getFavouriteStocks(user);
       setStocks(newStocks);
     };
     getStocks();
-  }, []);
+  }, [user]);
 
   const deleteItem = async (symbol: string) => {
     const newStocks = await deleteStock(user, symbol);

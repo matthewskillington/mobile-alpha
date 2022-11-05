@@ -11,10 +11,10 @@ const setFavStocksForUser = (userId: string, stocks: Array<string>) => {
   console.log(`saved ${stocks.toString()} for ${userId}`);
 };
 
-const getFavStocksForUser = async (userId: string) => {
+const getFavStocksForUser = async (userId: string): Promise<Array<string>> => {
   const dbRef = ref(getDatabase());
   const result = await get(child(dbRef, `users/${userId}`));
-  return result;
+  return result.val().favStocks as string[];
 };
 
 export { setFavStocksForUser, getFavStocksForUser };
