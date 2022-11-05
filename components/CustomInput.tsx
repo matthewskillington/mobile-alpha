@@ -45,4 +45,9 @@ const CustomInput = ({
 
 );
 
+CustomInput.defaultProps = {
+  placeholder: '',
+  secureTextEntry: false,
+};
+
 export { CustomInput };
