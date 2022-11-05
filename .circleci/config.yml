@@ -11,7 +11,7 @@ jobs:
   test: 
       executor:
           name: node/default
-          tag: '14.18'
+          tag: '14.20'
       steps:
         - checkout
         - node/install-packages:
