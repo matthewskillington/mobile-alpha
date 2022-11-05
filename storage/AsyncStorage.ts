@@ -19,6 +19,13 @@ const saveStockAsFavourite = async (symbol: string): Promise<string[]> => {
   return newStocks || [];
 };
 
+const getFavourites = async (): Promise<string[]> => {
+  const stocks = await AsyncStorage.getItem(FAV_STOCKS);
+  const parsedStocks = stocks ? JSON.parse(stocks) : [];
+  const newStocks = parsedStocks as string[];
+  return newStocks || [];
+};
+
 const saveJSON = async (key: string, value: any) => {
   const dataToSave = value;
   dataToSave.timeSaved = Date.now();
@@ -26,4 +33,6 @@ const saveJSON = async (key: string, value: any) => {
   await AsyncStorage.setItem(key, stringValue);
 };
 
-export { deleteStockAsFavourite, saveStockAsFavourite, saveJSON };
+export {
+  deleteStockAsFavourite, saveStockAsFavourite, getFavourites, saveJSON,
+};

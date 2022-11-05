@@ -4,12 +4,12 @@ import { Dimensions, StyleSheet, useColorScheme } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 
-import { Text, View } from '../components/Themed';
-import { getCurrencySymbolFromStockSymbol, roundPercentage } from '../helpers/helper';
-import { TimeSpanOptions, useGraphData } from '../hooks/useGraphData';
-import { PerformanceTracker } from '../performance/performance-tracker.component';
-import { PerformanceTrackerScreenIds } from '../performance/types';
-import { GraphModalRouteProps } from '../types';
+import { Text, View } from '../Themed';
+import { getCurrencySymbolFromStockSymbol, roundPercentage } from '../../helpers/helper';
+import { TimeSpanOptions, useGraphData } from '../../hooks/useGraphData';
+import { PerformanceTracker } from '../../performance/performance-tracker.component';
+import { PerformanceTrackerScreenIds } from '../../performance/types';
+import { GraphModalRouteProps } from '../../types';
 
 const styles = StyleSheet.create({
   container: {

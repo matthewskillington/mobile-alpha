@@ -13,12 +13,12 @@ import { ColorSchemeName } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import useUser from '../hooks/useUser';
-import GraphModal from '../screens/GraphModal';
-import LoginScreen from '../screens/LoginScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
-import PredictionScreen from '../screens/PredictionScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import GraphModal from '../components/screens/GraphModal';
+import LoginScreen from '../components/screens/LoginScreen';
+import NotFoundScreen from '../components/screens/NotFoundScreen';
+import PredictionScreen from '../components/screens/PredictionScreen';
+import TabOneScreen from '../components/screens/TabOneScreen';
+import TabTwoScreen from '../components/screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
