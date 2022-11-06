@@ -14,12 +14,6 @@
     "preset": "jest-expo",
     "setupFiles": [
       "<rootDir>/__mocks__/setup.js"
-    ],
-    "modulePaths": [
-      "<rootDir>"
-    ],
-    "moduleDirectories": [
-      "node_modules"
     ]
   },
   "dependencies": {
