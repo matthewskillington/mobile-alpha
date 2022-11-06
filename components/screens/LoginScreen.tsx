@@ -11,6 +11,7 @@ import { CustomInput } from '../CustomInput';
 
 import { View } from '../Themed';
 import useUser from '../../hooks/useUser';
+import { deleteLoginInfo, saveLoginInfo } from '../../storage/AsyncStorage';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
 
 export default function LoginScreen() {
   const auth = getAuth();
-  const [isUserAuthenticated, setIsUserAuthenticated] = useState<Boolean>(false);
   const [signInState, setSignInState] = useState<'SignIn' | 'SignUp'>('SignUp');
   const [values, setValues] = useState({
     email: '',
@@ -56,24 +56,24 @@ export default function LoginScreen() {
   });
 
   const { user, setUser } = useUser();
+  const isUserAuthenticated = !!user?.user.email;
 
   const signOut = () => {
-    setIsUserAuthenticated(false);
     setUser(undefined);
+    deleteLoginInfo();
   };
 
   const createUser = async () => {
     try {
       const createResult = await createUserWithEmailAndPassword(auth, values.email, values.password);
-      setIsUserAuthenticated(true);
       setUser(createResult);
+      saveLoginInfo(createResult);
     } catch (error: any) {
       setValues({
         email: '',
         password: '',
         error: error.message,
       });
-      console.log('Error creating user: ', error);
     }
   };
 
@@ -81,8 +81,8 @@ export default function LoginScreen() {
     try {
       const signInResult = await signInWithEmailAndPassword(auth, values.email, values.password);
       if (signInResult.user.refreshToken) {
-        setIsUserAuthenticated(true);
         setUser(signInResult);
+        saveLoginInfo(signInResult);
         return;
       }
       throw new Error('No refresh token');

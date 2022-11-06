@@ -1,5 +1,6 @@
 import { UserCredential } from 'firebase/auth';
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
+import { getLoginInfo } from '../storage/AsyncStorage';
 
 type UserContextType = {
   user: UserCredential | undefined,
@@ -14,6 +15,16 @@ const UserContext = createContext<UserContextType>({
 const UserProvider = (props: any) => {
   const { children } = props;
   const [userState, setUserState] = useState<UserCredential | undefined>();
+
+  useEffect(() => {
+    const checkPersistedUser = async () => {
+      const loginInfo = await getLoginInfo();
+      if (loginInfo) {
+        setUserState(loginInfo);
+      }
+    };
+    checkPersistedUser();
+  }, []);
 
   const setUser = (user: UserCredential | undefined) => {
     setUserState(user);
