@@ -146,4 +146,10 @@ const SearchComponent = ({
   );
 };
 
+SearchComponent.defaultProps = {
+  includeBorders: false,
+  setSelectedAsInputValue: false,
+  selectItem: () => {},
+};
+
 export { SearchComponent };
