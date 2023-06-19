@@ -1,4 +1,4 @@
-import { CurrencySymbol } from '../types';
+import { CurrencySymbol } from '../../types';
 
 const TenMinutes = 600000;
 

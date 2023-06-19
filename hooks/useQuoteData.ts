@@ -2,8 +2,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { getPrices } from '../api/alphaVantage';
-import { dataNeedsUpdate } from '../helpers/helper';
-import { saveJSON } from '../storage/AsyncStorage';
+import { dataNeedsUpdate } from '../app/helpers/helper';
+import { saveJSON } from '../app/storage/AsyncStorage';
 
 export type StockData = {
   symbol: string;

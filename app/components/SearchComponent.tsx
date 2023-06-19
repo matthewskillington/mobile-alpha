@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 import {
   Text, StyleSheet, View, TextInput, TouchableOpacity,
 } from 'react-native';
-import { searchStocks } from '../api/alphaVantage';
+import { searchStocks } from '../../api/alphaVantage';
 
 const NAME = '2. name';
 const SYMBOL = '1. symbol';

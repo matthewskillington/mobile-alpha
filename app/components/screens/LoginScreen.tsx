@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { CustomInput } from '../CustomInput';
 
 import { View } from '../Themed';
-import useUser from '../../hooks/useUser';
+import useUser from '../../../hooks/useUser';
 import { deleteLoginInfo, saveLoginInfo } from '../../storage/AsyncStorage';
 
 const styles = StyleSheet.create({

@@ -6,8 +6,8 @@ import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart'
 import { getPrices } from '../api/alphaVantage';
 import {
   dataNeedsUpdate, round,
-} from '../helpers/helper';
-import { saveJSON } from '../storage/AsyncStorage';
+} from '../app/helpers/helper';
+import { saveJSON } from '../app/storage/AsyncStorage';
 
 const TIME_SERIES_MONTHLY = 'Monthly Time Series';
 

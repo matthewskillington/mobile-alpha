@@ -4,9 +4,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { StockTab } from '../StockTab/StockTab';
 
 import { View } from '../Themed';
-import { PerformanceTracker } from '../../performance/performance-tracker.component';
-import { PerformanceTrackerScreenIds } from '../../performance/types';
-import { RootTabScreenProps } from '../../types';
+import { PerformanceTracker } from '../../../performance/performance-tracker.component';
+import { PerformanceTrackerScreenIds } from '../../../performance/types';
+import { RootTabScreenProps } from '../../../types';
 
 const styles = StyleSheet.create({
   container: {
