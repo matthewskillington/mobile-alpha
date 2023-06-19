@@ -12,7 +12,7 @@ import { ColorSchemeName } from 'react-native';
 
 import Colors from '../app/constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import useUser from '../hooks/useUser';
+import useUser from '../app/hooks/useUser';
 import GraphModal from '../app/components/screens/GraphModal';
 import LoginScreen from '../app/components/screens/LoginScreen';
 import NotFoundScreen from '../app/components/screens/NotFoundScreen';

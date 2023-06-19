@@ -6,7 +6,7 @@ import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 
 import { Text, View } from '../Themed';
 import { getCurrencySymbolFromStockSymbol, roundPercentage } from '../../helpers/helper';
-import { TimeSpanOptions, useGraphData } from '../../../hooks/useGraphData';
+import { TimeSpanOptions, useGraphData } from '../../hooks/useGraphData';
 import { PerformanceTracker } from '../../../performance/performance-tracker.component';
 import { PerformanceTrackerScreenIds } from '../../../performance/types';
 import { GraphModalRouteProps } from '../../../types';

@@ -7,7 +7,7 @@ import {
 import { TechnicalIndicator, TechnicalIndicatorWarning } from '../TechnicalIndicator';
 import { Text } from '../Themed';
 import { getRecommendationHelper } from '../../helpers/helper';
-import { usePredictionData } from '../../../hooks/usePredictionData';
+import { usePredictionData } from '../../hooks/usePredictionData';
 import { PerformanceTracker } from '../../../performance/performance-tracker.component';
 import { PerformanceTrackerScreenIds } from '../../../performance/types';
 

@@ -3,11 +3,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { Dataset } from 'react-native-chart-kit/dist/HelperTypes';
 import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart';
-import { getPrices } from '../api/alphaVantage';
+import { getPrices } from '../../api/alphaVantage';
 import {
   dataNeedsUpdate, round,
-} from '../app/helpers/helper';
-import { saveJSON } from '../app/storage/AsyncStorage';
+} from '../helpers/helper';
+import { saveJSON } from '../storage/AsyncStorage';
 
 const TIME_SERIES_MONTHLY = 'Monthly Time Series';
 
