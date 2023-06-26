@@ -1,5 +1,5 @@
-import { getExchangeRate as AVGetExchangeRate } from '../api/alphaVantage';
-import { CurrencySymbol } from '../types';
+import { getExchangeRate as AVGetExchangeRate } from '../../api/alphaVantage';
+import { CurrencySymbol } from '../../types';
 
 const REALTIME_CURRENCY_EXCHANGE_RATE = 'Realtime Currency Exchange Rate';
 const EXCHANGE_RATE = '5. Exchange Rate';

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useQuoteData } from '../../hooks/useQuoteData';
 import { StockTabItem } from '../StockItem';
 
-import { RootTabNavigation } from '../../types';
+import { RootTabNavigation } from '../../../types';
 import { SearchComponent } from '../SearchComponent';
 import useUser from '../../hooks/useUser';
 import { deleteStock, getFavouriteStocks, saveStock } from './update-stocks';

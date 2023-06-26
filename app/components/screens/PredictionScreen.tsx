@@ -8,10 +8,10 @@ import { TechnicalIndicator, TechnicalIndicatorWarning } from '../TechnicalIndic
 import { Text } from '../Themed';
 import { getRecommendationHelper } from '../../helpers/helper';
 import { usePredictionData } from '../../hooks/usePredictionData';
-import { PerformanceTracker } from '../../performance/performance-tracker.component';
-import { PerformanceTrackerScreenIds } from '../../performance/types';
+import { PerformanceTracker } from '../../../performance/performance-tracker.component';
+import { PerformanceTrackerScreenIds } from '../../../performance/types';
 
-import { RootStackScreenProps } from '../../types';
+import { RootStackScreenProps } from '../../../types';
 
 const styles = StyleSheet.create({
   container: {

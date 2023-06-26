@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { Dataset } from 'react-native-chart-kit/dist/HelperTypes';
 import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart';
-import { getPrices } from '../api/alphaVantage';
+import { getPrices } from '../../api/alphaVantage';
 import {
   dataNeedsUpdate, round,
 } from '../helpers/helper';

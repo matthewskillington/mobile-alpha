@@ -10,15 +10,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 
-import Colors from '../constants/Colors';
+import Colors from '../app/constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import useUser from '../hooks/useUser';
-import GraphModal from '../components/screens/GraphModal';
-import LoginScreen from '../components/screens/LoginScreen';
-import NotFoundScreen from '../components/screens/NotFoundScreen';
-import PredictionScreen from '../components/screens/PredictionScreen';
-import TabOneScreen from '../components/screens/TabOneScreen';
-import TabTwoScreen from '../components/screens/TabTwoScreen';
+import useUser from '../app/hooks/useUser';
+import GraphModal from '../app/components/screens/GraphModal';
+import LoginScreen from '../app/components/screens/LoginScreen';
+import NotFoundScreen from '../app/components/screens/NotFoundScreen';
+import PredictionScreen from '../app/components/screens/PredictionScreen';
+import TabOneScreen from '../app/components/screens/TabOneScreen';
+import TabTwoScreen from '../app/components/screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 

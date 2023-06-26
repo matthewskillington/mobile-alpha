@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
-import { getPrices } from '../api/alphaVantage';
+import { getPrices } from '../../api/alphaVantage';
 import { dataNeedsUpdate } from '../helpers/helper';
 import { saveJSON } from '../storage/AsyncStorage';
 
