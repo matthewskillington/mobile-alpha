@@ -7,6 +7,7 @@ import { View } from '../Themed';
 import { PerformanceTracker } from '../../performance/performance-tracker.component';
 import { PerformanceTrackerScreenIds } from '../../performance/types';
 import { RootTabScreenProps } from '../../types';
+import { CounterComponent } from '../CounterComponent';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +37,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
             title="Market data"
             navigation={navigation}
           />
+          <CounterComponent />
         </View>
       </ScrollView>
     </PerformanceTracker>
