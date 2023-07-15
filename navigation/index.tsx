@@ -12,7 +12,6 @@ import { ColorSchemeName } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import useUser from '../hooks/useUser';
 import GraphModal from '../components/screens/GraphModal';
 import LoginScreen from '../components/screens/LoginScreen';
 import NotFoundScreen from '../components/screens/NotFoundScreen';
@@ -21,6 +20,7 @@ import TabOneScreen from '../components/screens/TabOneScreen';
 import TabTwoScreen from '../components/screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import { useAppSelector } from '../redux/hooks';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -40,7 +40,7 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-  const { user } = useUser();
+  const user = useAppSelector((state) => state.user.value);
 
   return (
     <BottomTab.Navigator

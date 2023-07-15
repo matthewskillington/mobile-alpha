@@ -1,5 +1,5 @@
-import { UserCredential } from '@firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { User } from 'firebase/auth';
 import { FAV_STOCKS } from '../../constants/Values';
 import { getFavStocksForUser, setFavStocksForUser } from '../../helpers/firebase-db-helper';
 import { mergeArrayWithoutDuplicates } from '../../helpers/merge-array-without-duplicates';
@@ -13,27 +13,27 @@ const updateFireStoreDb = (userId: string, stocks: string[]) => {
   }
 };
 
-const saveStockAsFavourite = async (user: UserCredential | undefined, symbol: string) => {
+const saveStockAsFavourite = async (user: User | undefined, symbol: string) => {
   const newStocks = await saveFavouriteToAsyncStorage(symbol);
-  const userId = user?.user?.uid;
+  const userId = user?.uid;
   if (userId) {
     updateFireStoreDb(userId, newStocks);
   }
   return newStocks;
 };
 
-const deleteStockAsFavourite = async (user: UserCredential | undefined, symbol: string) => {
+const deleteStockAsFavourite = async (user: User | undefined, symbol: string) => {
   const newStocks = await deleteFavouriteOnAsyncStorage(symbol);
-  const userId = user?.user?.uid;
+  const userId = user?.uid;
   if (userId) {
     updateFireStoreDb(userId, newStocks);
   }
   return newStocks;
 };
 
-const getFavouriteStocks = async (user: UserCredential | undefined) => {
+const getFavouriteStocks = async (user: User | undefined) => {
   const newStocks = await getFavouriteStocksOnAsyncStorage();
-  const userId = user?.user?.uid;
+  const userId = user?.uid;
   if (userId) {
     const stocksFromFirebase = await getFavStocksForUser(userId);
     const merged = mergeArrayWithoutDuplicates(stocksFromFirebase, newStocks);

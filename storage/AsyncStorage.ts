@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserCredential } from 'firebase/auth';
+import { User } from 'firebase/auth';
 import { FAV_STOCKS, PERSISTED_USER } from '../constants/Values';
 import { arrayRemove } from '../helpers/helper';
 
@@ -34,7 +34,7 @@ const saveJSON = async (key: string, value: any) => {
   await AsyncStorage.setItem(key, stringValue);
 };
 
-const saveLoginInfo = (user: UserCredential) => {
+const saveLoginInfo = (user: User) => {
   const stringValue = JSON.stringify(user);
   AsyncStorage.setItem(PERSISTED_USER, stringValue);
 };
@@ -43,9 +43,9 @@ const deleteLoginInfo = () => {
   AsyncStorage.removeItem(PERSISTED_USER);
 };
 
-const getLoginInfo = async (): Promise<UserCredential | null> => {
+const getLoginInfo = async (): Promise<User | null> => {
   const info = await AsyncStorage.getItem(PERSISTED_USER);
-  const parsed = info ? JSON.parse(info) as UserCredential : null;
+  const parsed = info ? JSON.parse(info) as User : null;
   return parsed;
 };
 

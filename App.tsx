@@ -23,14 +23,14 @@ export default function App() {
   }
   return (
     <PerformanceProvider>
-      <SafeAreaProvider>
-        <UserProvider>
-          <Provider store={store}>
+      <Provider store={store}>
+        <SafeAreaProvider>
+          <UserProvider>
             <Navigation colorScheme={colorScheme} />
             <StatusBar />
-          </Provider>
-        </UserProvider>
-      </SafeAreaProvider>
+          </UserProvider>
+        </SafeAreaProvider>
+      </Provider>
     </PerformanceProvider>
   );
 }

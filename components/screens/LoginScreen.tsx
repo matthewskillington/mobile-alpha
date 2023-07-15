@@ -7,11 +7,13 @@ import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { CustomInput } from '../CustomInput';
 
 import { View } from '../Themed';
-import useUser from '../../hooks/useUser';
 import { deleteLoginInfo, saveLoginInfo } from '../../storage/AsyncStorage';
+import { useAppSelector } from '../../redux/hooks';
+import { setUser } from '../../redux/userSlice';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,19 +57,20 @@ export default function LoginScreen() {
     error: '',
   });
 
-  const { user, setUser } = useUser();
-  const isUserAuthenticated = !!user?.user.email;
+  const user = useAppSelector((state) => state.user.value);
+  const dispatch = useDispatch();
+  const isUserAuthenticated = !!user?.email;
 
   const signOut = () => {
-    setUser(undefined);
+    dispatch(setUser(undefined));
     deleteLoginInfo();
   };
 
   const createUser = async () => {
     try {
       const createResult = await createUserWithEmailAndPassword(auth, values.email, values.password);
-      setUser(createResult);
-      saveLoginInfo(createResult);
+      dispatch(setUser(createResult.user));
+      saveLoginInfo(createResult.user);
     } catch (error: any) {
       setValues({
         email: '',
@@ -81,8 +84,8 @@ export default function LoginScreen() {
     try {
       const signInResult = await signInWithEmailAndPassword(auth, values.email, values.password);
       if (signInResult.user.refreshToken) {
-        setUser(signInResult);
-        saveLoginInfo(signInResult);
+        dispatch(setUser(signInResult.user));
+        saveLoginInfo(signInResult.user);
         return;
       }
       throw new Error('No refresh token');
@@ -124,7 +127,7 @@ export default function LoginScreen() {
               <Text style={styles.signUpHeading}>
                 Hello
                 {' '}
-                {user?.user.email}
+                {user?.email}
                 !
               </Text>
               <Button

@@ -1,37 +1,35 @@
-import { UserCredential } from 'firebase/auth';
-import React, { createContext, useEffect, useState } from 'react';
+import { User } from 'firebase/auth';
+import React, { createContext, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../redux/hooks';
+import { setUser } from '../redux/userSlice';
 import { getLoginInfo } from '../storage/AsyncStorage';
 
 type UserContextType = {
-  user: UserCredential | undefined,
-  setUser: (user: UserCredential | undefined) => void,
+  user: User | undefined,
 };
 
 const UserContext = createContext<UserContextType>({
   user: undefined,
-  setUser: () => {},
 });
 
 const UserProvider = (props: any) => {
   const { children } = props;
-  const [userState, setUserState] = useState<UserCredential | undefined>();
+  const user = useAppSelector((state) => state.user.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const checkPersistedUser = async () => {
       const loginInfo = await getLoginInfo();
       if (loginInfo) {
-        setUserState(loginInfo);
+        dispatch(setUser(loginInfo));
       }
     };
     checkPersistedUser();
   }, []);
 
-  const setUser = (user: UserCredential | undefined) => {
-    setUserState(user);
-  };
-
   return (
-    <UserContext.Provider value={{ user: userState, setUser }}>
+    <UserContext.Provider value={{ user }}>
       {children}
     </UserContext.Provider>
   );

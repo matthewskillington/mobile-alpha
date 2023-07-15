@@ -9,8 +9,8 @@ import { StockTabItem } from '../StockItem';
 
 import { RootTabNavigation } from '../../types';
 import { SearchComponent } from '../SearchComponent';
-import useUser from '../../hooks/useUser';
 import { deleteStock, getFavouriteStocks, saveStock } from './update-stocks';
+import { useAppSelector } from '../../redux/hooks';
 
 export type StockTabProps = {
   title: string,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 const StockTab = ({ title, navigation }: StockTabProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [stocks, setStocks] = useState<Array<string>>([]);
-  const { user } = useUser();
+  const user = useAppSelector((state) => state.user.value);
 
   const { data, fetchData: refetchData } = useQuoteData(stocks);
 
