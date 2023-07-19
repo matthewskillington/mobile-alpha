@@ -3,7 +3,6 @@ import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { initializeApp } from 'firebase/app';
 import { Provider } from 'react-redux';
-import { UserProvider } from './context/UserContext';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
@@ -25,10 +24,8 @@ export default function App() {
     <PerformanceProvider>
       <Provider store={store}>
         <SafeAreaProvider>
-          <UserProvider>
-            <Navigation colorScheme={colorScheme} />
-            <StatusBar />
-          </UserProvider>
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
         </SafeAreaProvider>
       </Provider>
     </PerformanceProvider>

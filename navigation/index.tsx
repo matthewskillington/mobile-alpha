@@ -21,6 +21,7 @@ import TabTwoScreen from '../components/screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import { useAppSelector } from '../redux/hooks';
+import { useUserPersistance } from '../hooks/UserProvider';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -97,6 +98,8 @@ function RootNavigator() {
 }
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+  useUserPersistance();
+
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
